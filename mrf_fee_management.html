@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRF Nursing College - ফি ম্যানেজমেন্ট সিস্টেম</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #1a3a5c;
+    --primary-light: #2a5298;
+    --accent: #c8a951;
+    --accent-light: #f0d98a;
+    --bg: #f0f4f8;
+    --white: #ffffff;
+    --text: #1a2332;
+    --text-muted: #5a6a7a;
+    --border: #c8d8e8;
+    --success: #27ae60;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --row-alt: #f7fafc;
+    --shadow: 0 2px 12px rgba(26,58,92,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hind Siliguri', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(26,58,92,0.3);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 28px;
+  }
+  .logo-circle {
+    width: 58px; height: 58px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 700; color: var(--primary);
+    flex-shrink: 0; letter-spacing: -1px;
+  }
+  .header-title h1 { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .header-title p { font-size: 13px; opacity: 0.82; margin-top: 2px; }
+
+  /* ===== NAV ===== */
+  .nav {
+    background: var(--primary);
+    border-top: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    gap: 0;
+    padding: 0 20px;
+    overflow-x: auto;
+  }
+  .nav-btn {
+    background: none; border: none;
+    color: rgba(255,255,255,0.75);
+    font-family: inherit; font-size: 14px;
+    padding: 13px 18px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: white; background: rgba(255,255,255,0.08); }
+  .nav-btn.active { color: var(--accent-light); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* ===== MAIN CONTENT ===== */
+  .main { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: white; border-radius: 10px;
+    box-shadow: var(--shadow); padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 16px; font-weight: 600;
+    color: var(--primary); margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ===== FORM ===== */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+  .form-group input, .form-group select {
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-family: inherit; font-size: 14px;
+    color: var(--text);
+    background: white;
+    transition: border 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--primary-light); }
+  .form-group.full { grid-column: 1 / -1; }
+
+  /* ===== DROPDOWN FEE ENTRY ===== */
+  .fee-add-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 160px auto;
+    gap: 10px; align-items: flex-end;
+    padding: 14px; background: #f0f7ff;
+    border: 1.5px dashed var(--primary-light);
+    border-radius: 9px; margin-bottom: 14px;
+  }
+  .fee-add-row select, .fee-add-row input {
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-family: inherit; font-size: 14px;
+    outline: none; background: white;
+    color: var(--text);
+  }
+  .fee-add-row select:focus, .fee-add-row input:focus { border-color: var(--primary-light); }
+  .fee-add-row label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; display: block; }
+
+  .fee-added-list { margin-bottom: 8px; }
+  .fee-item-row {
+    display: grid;
+    grid-template-columns: 30px 1fr 140px 36px;
+    gap: 0;
+    align-items: center;
+    border-bottom: 1px solid #eef2f7;
+    transition: background 0.15s;
+  }
+  .fee-item-row:nth-child(even) { background: var(--row-alt); }
+  .fee-item-row:hover { background: #e8f0fa; }
+  .fee-item-row:first-child { border-top: 1px solid var(--border); border-radius: 8px 8px 0 0; }
+  .fee-item-row:last-child { border-radius: 0 0 8px 8px; }
+
+  .fee-item-num {
+    text-align: center; font-size: 11px;
+    color: var(--text-muted); padding: 8px 0;
+  }
+  .fee-item-name {
+    padding: 8px 10px; font-size: 13.5px; line-height: 1.3;
+  }
+  .fee-item-name small { display: block; font-size: 11px; color: var(--text-muted); }
+  .fee-item-amount {
+    padding: 5px 8px; border-left: 1px solid #eef2f7;
+  }
+  .fee-item-amount input {
+    width: 100%; padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-family: inherit; font-size: 13px;
+    text-align: right; outline: none; background: white;
+    color: var(--text);
+  }
+  .fee-item-amount input:focus { border-color: var(--primary-light); background: #f0f8ff; }
+  .fee-item-del {
+    text-align: center; border-left: 1px solid #eef2f7;
+    padding: 5px;
+  }
+  .fee-item-del button {
+    background: none; border: none; cursor: pointer;
+    color: var(--danger); font-size: 16px; line-height: 1;
+    padding: 4px 8px; border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .fee-item-del button:hover { background: #fde8e8; }
+
+  .fee-list-header {
+    display: grid;
+    grid-template-columns: 30px 1fr 140px 36px;
+    background: var(--primary); color: white;
+    border-radius: 8px 8px 0 0;
+  }
+  .fee-list-header div {
+    padding: 8px 10px; font-size: 12px; font-weight: 600;
+  }
+  .empty-fee-msg {
+    text-align: center; padding: 22px;
+    color: var(--text-muted); font-size: 13px;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: #fafbfc;
+  }
+
+  /* ===== TOTAL BAR ===== */
+  .total-bar {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white; padding: 14px 20px;
+    border-radius: 8px; margin-top: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .total-bar .total-label { font-size: 15px; font-weight: 500; }
+  .total-bar .total-amount { font-size: 22px; font-weight: 700; color: var(--accent-light); }
+
+  /* ===== BUTTONS ===== */
+  .btn-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .btn {
+    padding: 10px 22px; border: none; border-radius: 7px;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-light); }
+  .btn-success { background: var(--success); color: white; }
+  .btn-success:hover { background: #219a52; }
+  .btn-accent { background: var(--accent); color: var(--primary); }
+  .btn-accent:hover { background: #b8993f; }
+  .btn-danger { background: var(--danger); color: white; }
+  .btn-danger:hover { background: #c0392b; }
+  .btn-outline {
+    background: white; color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+  .btn-outline:hover { background: var(--primary); color: white; }
+  .btn-sm { padding: 6px 14px; font-size: 13px; }
+
+  /* ===== SEARCH BAR ===== */
+  .search-row {
+    display: flex; gap: 10px; align-items: flex-end;
+    flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .search-row .form-group { margin-bottom: 0; flex: 1; min-width: 180px; }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead tr { background: var(--primary); color: white; }
+  th { padding: 10px 12px; text-align: left; font-weight: 600; white-space: nowrap; }
+  td { padding: 8px 12px; border-bottom: 1px solid #eef2f7; vertical-align: middle; }
+  tbody tr:nth-child(even) { background: var(--row-alt); }
+  tbody tr:hover { background: #e8f0fa; }
+
+  /* ===== STAT CARDS ===== */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px; margin-bottom: 20px;
+  }
+  .stat-card {
+    background: white; border-radius: 10px;
+    padding: 18px 20px; box-shadow: var(--shadow);
+    border-left: 5px solid var(--primary);
+  }
+  .stat-card.accent { border-left-color: var(--accent); }
+  .stat-card.success { border-left-color: var(--success); }
+  .stat-card.warning { border-left-color: var(--warning); }
+  .stat-value { font-size: 26px; font-weight: 700; color: var(--primary); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 5px; font-weight: 500; }
+
+  /* ===== BADGE ===== */
+  .badge {
+    display: inline-block; padding: 2px 9px;
+    border-radius: 12px; font-size: 12px; font-weight: 600;
+  }
+  .badge-success { background: #d4edda; color: #155724; }
+  .badge-warning { background: #fff3cd; color: #856404; }
+  .badge-info { background: #d1ecf1; color: #0c5460; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white; border-radius: 12px;
+    max-width: 900px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal-header {
+    background: var(--primary); color: white;
+    padding: 16px 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-radius: 12px 12px 0 0;
+  }
+  .modal-header h3 { font-size: 16px; }
+  .modal-close {
+    background: none; border: none; color: white;
+    font-size: 22px; cursor: pointer; line-height: 1;
+  }
+  .modal-body { padding: 22px; }
+
+  /* ===== PRINT ===== */
+  @media print {
+    body { background: white; font-size: 12px; }
+    .no-print { display: none !important; }
+    .print-area { display: block !important; }
+    .header, .nav { display: none !important; }
+    .main { padding: 0; max-width: 100%; }
+    .card { box-shadow: none; padding: 10px; }
+    table { font-size: 11px; }
+    th, td { padding: 5px 7px; }
+    .print-header {
+      text-align: center; margin-bottom: 14px;
+      border-bottom: 2px solid #333; padding-bottom: 10px;
+    }
+    .print-header h2 { font-size: 16px; }
+    .print-header p { font-size: 12px; color: #555; }
+    @page { margin: 15mm 10mm; }
+  }
+
+  /* ===== MISC ===== */
+  .alert {
+    padding: 12px 16px; border-radius: 7px;
+    margin-bottom: 14px; font-size: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+  .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+  .alert-info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+  .hidden { display: none !important; }
+  .text-right { text-align: right; }
+  .text-center { text-align: center; }
+  .fw-600 { font-weight: 600; }
+  .text-primary { color: var(--primary); }
+  .text-success { color: var(--success); }
+  .text-muted { color: var(--text-muted); }
+  .mb-10 { margin-bottom: 10px; }
+  .mt-10 { margin-top: 10px; }
+
+  .filter-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    align-items: flex-end; margin-bottom: 14px;
+  }
+  .filter-row .form-group { min-width: 160px; }
+  .report-summary {
+    background: #f0f8e8; border: 1px solid #c3e6c3;
+    border-radius: 7px; padding: 12px 16px;
+    margin-bottom: 14px; font-size: 13px;
+  }
+
+  .print-header-block {
+    display: none;
+  }
+  @media print {
+    .print-header-block { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header no-print">
+  <div class="header-inner">
+    <div class="logo-circle">MRF</div>
+    <div class="header-title">
+      <h1>মজিবর রহমান ফাউন্ডেশন নার্সিং কলেজ</h1>
+      <p>শিক্ষার্থী ফি ম্যানেজমেন্ট সিস্টেম &nbsp;|&nbsp; Mazibar Rahman Foundation Nursing College</p>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav no-print">
+  <button class="nav-btn active" onclick="showSection('dashboard')">📊 ড্যাশবোর্ড</button>
+  <button class="nav-btn" onclick="showSection('collect')">💰 ফি আদায়</button>
+  <button class="nav-btn" onclick="showSection('students')">👩‍🎓 শিক্ষার্থী তালিকা</button>
+  <button class="nav-btn" onclick="showSection('search')">🔍 শিক্ষার্থী হিস্ট্রি</button>
+  <button class="nav-btn" onclick="showSection('reports')">📋 রিপোর্ট</button>
+  <button class="nav-btn" onclick="openSettings()" style="margin-left:auto">⚙️ সেটিংস</button>
+</div>
+
+<!-- LOADING BAR -->
+<div id="loadingBar" style="display:none;background:var(--accent);color:var(--primary);text-align:center;padding:8px;font-size:13px;font-weight:600;position:sticky;top:0;z-index:999"></div>
+
+<!-- STATUS BAR -->
+<div id="statusBar" style="display:none;padding:8px 28px;font-size:13px;font-weight:500;border-bottom:1px solid rgba(0,0,0,0.08)" class="no-print"></div>
+<div id="loadingBar" style="display:none;padding:8px 28px;font-size:13px;background:#e8f0fa;color:#1a3a5c;font-weight:500" class="no-print"></div>
+
+<!-- URL SETUP NOTICE -->
+<div id="urlNotice" style="display:none;background:#fff3cd;border-bottom:2px solid #ffc107;padding:12px 28px;font-size:13px" class="no-print">
+  ⚙️ <strong>সেটআপ প্রয়োজন:</strong> Apps Script URL এখনো সেট করা হয়নি।
+  &nbsp;<input id="urlInput" type="text" placeholder="Apps Script Web App URL পেস্ট করুন" 
+    style="width:420px;padding:5px 10px;border:1.5px solid #ffc107;border-radius:6px;font-size:13px;outline:none">
+  &nbsp;<button onclick="saveScriptURL()" style="padding:5px 14px;background:#1a3a5c;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px">✅ সেভ করুন</button>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div class="main">
+<div id="sec-dashboard" class="section active">
+  <div class="stat-grid" id="statGrid"></div>
+  <div class="card">
+    <div class="card-title" style="justify-content:space-between">
+      <span>📋 সর্বশেষ ১০টি ফি এন্ট্রি</span>
+      <button class="btn btn-sm btn-outline no-print" onclick="loadFromSheets()" style="font-size:12px;padding:5px 12px">🔄 Sync করুন</button>
+    </div>
+    <div class="table-wrap">
+      <table id="recentTable">
+        <thead>
+          <tr>
+            <th>তারিখ</th><th>Student ID</th><th>নাম</th><th>কোর্স</th>
+            <th>খাত</th><th class="text-right">মোট টাকা</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="recentTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FEE COLLECTION ============ -->
+<div id="sec-collect" class="section">
+  <div class="card">
+    <div class="card-title">👩‍🎓 শিক্ষার্থীর তথ্য</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Student ID *</label>
+        <input type="text" id="c_sid" placeholder="যেমন: MRF-2024-001" oninput="autoFillStudent()">
+      </div>
+      <div class="form-group">
+        <label>ক্লাস রোল</label>
+        <input type="text" id="c_roll" placeholder="রোল নম্বর">
+      </div>
+      <div class="form-group">
+        <label>শিক্ষার্থীর নাম *</label>
+        <input type="text" id="c_name" placeholder="পূর্ণ নাম">
+      </div>
+      <div class="form-group">
+        <label>কোর্স</label>
+        <select id="c_course">
+          <option value="">নির্বাচন করুন</option>
+          <option>B.Sc. in Nursing</option>
+          <option>Diploma in Nursing Science & Midwifery</option>
+          <option>Diploma in Midwifery</option>
+          <option>Post Basic B.Sc.</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>সেশন</label>
+        <select id="c_session">
+          <option value="">নির্বাচন করুন</option>
+          <option>2020-21</option><option>2021-22</option>
+          <option>2022-23</option><option>2023-24</option>
+          <option>2024-25</option><option>2025-26</option>
+          <option>2026-27</option><option>2027-28</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>মোবাইল নম্বর</label>
+        <input type="text" id="c_mobile" placeholder="01XXXXXXXXX">
+      </div>
+      <div class="form-group">
+        <label>প্রাপ্তি তারিখ *</label>
+        <input type="date" id="c_date">
+      </div>
+      <div class="form-group">
+        <label>মাস (কোন মাসের জন্য)</label>
+        <input type="month" id="c_month">
+      </div>
+      <div class="form-group">
+        <label>মন্তব্য</label>
+        <input type="text" id="c_remark" placeholder="ঐচ্ছিক">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💳 ফি খাত যোগ করুন</div>
+
+    <!-- Dropdown Add Row -->
+    <div class="fee-add-row">
+      <div>
+        <label>গ্রুপ নির্বাচন করুন</label>
+        <select id="fee_group_sel" onchange="updateKhatDropdown()">
+          <option value="">-- গ্রুপ নির্বাচন --</option>
+        </select>
+      </div>
+      <div>
+        <label>খাত নির্বাচন করুন</label>
+        <select id="fee_khat_sel">
+          <option value="">-- প্রথমে গ্রুপ নির্বাচন করুন --</option>
+        </select>
+      </div>
+      <div>
+        <label>পরিমাণ (টাকা)</label>
+        <input type="number" id="fee_amount_inp" placeholder="০" min="0"
+               onkeydown="if(event.key==='Enter') addFeeItem()">
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button class="btn btn-primary" onclick="addFeeItem()" style="width:100%;padding:9px 14px">
+          ➕ যোগ করুন
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick add buttons for common fees -->
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:500">⚡ দ্রুত যোগ করুন:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px" id="quickAddBtns"></div>
+    </div>
+
+    <!-- Added fees list -->
+    <div id="feeAddedContainer">
+      <div class="empty-fee-msg">এখনো কোনো খাত যোগ করা হয়নি। উপরের ড্রপডাউন থেকে খাত নির্বাচন করুন।</div>
+    </div>
+
+    <div class="total-bar" style="margin-top:14px">
+      <span class="total-label">সর্বমোট আদায়কৃত টাকা (<span id="feeCount">০</span> টি খাত)</span>
+      <span class="total-amount">৳ <span id="grandTotal">০</span></span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-success" onclick="saveEntry()">💾 সংরক্ষণ করুন</button>
+      <button class="btn btn-accent" onclick="printReceipt()">🖨️ রশিদ প্রিন্ট করুন</button>
+      <button class="btn btn-outline" onclick="clearForm()">🔄 নতুন এন্ট্রি</button>
+    </div>
+    <div id="saveAlert" class="hidden alert alert-success mt-10">✅ সফলভাবে সংরক্ষিত হয়েছে!</div>
+  </div>
+</div>
+
+<!-- ============ STUDENTS ============ -->
+<div id="sec-students" class="section">
+  <div class="card">
+    <div class="card-title">🔍 খোঁজুন</div>
+    <div class="search-row">
+      <div class="form-group">
+        <label>নাম / Student ID / রোল</label>
+        <input type="text" id="st_search" placeholder="যেকোনো তথ্য দিয়ে খুঁজুন" oninput="filterStudents()">
+      </div>
+      <div class="form-group">
+        <label>কোর্স</label>
+        <select id="st_course" onchange="filterStudents()">
+          <option value="">সকল কোর্স</option>
+          <option>B.Sc. in Nursing</option>
+          <option>Diploma in Nursing Science & Midwifery</option>
+          <option>Diploma in Midwifery</option>
+          <option>Post Basic B.Sc.</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-sm" style="height:38px;margin-bottom:0" onclick="filterStudents()">🔍 খুঁজুন</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Student ID</th><th>রোল</th><th>নাম</th>
+            <th>কোর্স</th><th>সেশন</th><th>মোবাইল</th>
+            <th class="text-right">মোট জমা</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="studentTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEARCH / HISTORY ============ -->
+<div id="sec-search" class="section">
+  <div class="card">
+    <div class="card-title">🔍 শিক্ষার্থীর ফি হিস্ট্রি</div>
+    <div class="search-row">
+      <div class="form-group">
+        <label>Student ID দিয়ে খুঁজুন</label>
+        <input type="text" id="h_sid" placeholder="Student ID লিখুন">
+      </div>
+      <div class="form-group">
+        <label>শুরুর তারিখ</label>
+        <input type="date" id="h_from">
+      </div>
+      <div class="form-group">
+        <label>শেষ তারিখ</label>
+        <input type="date" id="h_to">
+      </div>
+      <button class="btn btn-primary btn-sm" style="height:38px" onclick="searchHistory()">🔍 দেখুন</button>
+      <button class="btn btn-accent btn-sm no-print" style="height:38px" onclick="printHistory()">🖨️ প্রিন্ট</button>
+    </div>
+    <div id="historyResult"></div>
+  </div>
+</div>
+
+<!-- ============ REPORTS ============ -->
+<div id="sec-reports" class="section">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px" class="no-print">
+    <div class="card" style="margin-bottom:0;cursor:pointer;border:2px solid transparent;transition:border 0.2s"
+         onclick="showReport('khat')" id="rpt-card-khat">
+      <div style="text-align:center;padding:10px 0">
+        <div style="font-size:32px">📊</div>
+        <div style="font-size:15px;font-weight:600;color:var(--primary);margin-top:6px">খাত অনুযায়ী রিপোর্ট</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px">কোন খাতে কত টাকা আদায় হয়েছে</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0;cursor:pointer;border:2px solid transparent;transition:border 0.2s"
+         onclick="showReport('monthly')" id="rpt-card-monthly">
+      <div style="text-align:center;padding:10px 0">
+        <div style="font-size:32px">📅</div>
+        <div style="font-size:15px;font-weight:600;color:var(--primary);margin-top:6px">মাসিক রিপোর্ট</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px">মাস ভিত্তিক আদায়ের হিসাব</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Khat Report -->
+  <div id="rpt-khat" class="hidden">
+    <div class="card">
+      <div class="card-title">📊 খাত অনুযায়ী রিপোর্ট</div>
+      <div class="filter-row no-print">
+        <div class="form-group">
+          <label>শুরুর তারিখ</label>
+          <input type="date" id="khat_from">
+        </div>
+        <div class="form-group">
+          <label>শেষ তারিখ</label>
+          <input type="date" id="khat_to">
+        </div>
+        <div class="form-group">
+          <label>কোর্স</label>
+          <select id="khat_course">
+            <option value="">সকল কোর্স</option>
+            <option>B.Sc. in Nursing</option>
+            <option>Diploma in Nursing Science & Midwifery</option>
+            <option>Diploma in Midwifery</option>
+            <option>Post Basic B.Sc.</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" style="height:38px" onclick="genKhatReport()">📊 রিপোর্ট তৈরি করুন</button>
+        <button class="btn btn-accent btn-sm" style="height:38px" onclick="printKhatReport()">🖨️ প্রিন্ট</button>
+        <button class="btn btn-outline btn-sm" style="height:38px" onclick="hideReport('khat')">✕ বন্ধ করুন</button>
+      </div>
+      <div id="khatReportContent"></div>
+    </div>
+  </div>
+
+  <!-- Monthly Report -->
+  <div id="rpt-monthly" class="hidden">
+    <div class="card">
+      <div class="card-title">📅 মাসিক রিপোর্ট</div>
+      <div class="filter-row no-print">
+        <div class="form-group">
+          <label>মাস নির্বাচন করুন</label>
+          <input type="month" id="m_month">
+        </div>
+        <div class="form-group">
+          <label>কোর্স</label>
+          <select id="m_course">
+            <option value="">সকল কোর্স</option>
+            <option>B.Sc. in Nursing </option>
+            <option>Diploma in Nursing Science & Midwifery</option>
+            <option>Diploma in Midwifery</option>
+            <option>Post Basic B.Sc.</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" style="height:38px" onclick="genMonthlyReport()">📅 রিপোর্ট তৈরি করুন</button>
+        <button class="btn btn-accent btn-sm" style="height:38px" onclick="printMonthlyReport()">🖨️ প্রিন্ট</button>
+        <button class="btn btn-outline btn-sm" style="height:38px" onclick="hideReport('monthly')">✕ বন্ধ করুন</button>
+      </div>
+      <div id="monthlyReportContent"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<!-- RECEIPT MODAL -->
+<div class="modal-overlay no-print" id="receiptModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🖨️ ফি প্রাপ্তি রশিদ</h3>
+      <button class="modal-close" onclick="closeModal('receiptModal')">✕</button>
+    </div>
+    <div class="modal-body" id="receiptContent"></div>
+    <div style="padding:14px 22px;border-top:1px solid #eee" class="btn-row">
+      <button class="btn btn-accent" onclick="doPrint('receiptContent')">🖨️ প্রিন্ট করুন</button>
+      <button class="btn btn-outline" onclick="closeModal('receiptModal')">বন্ধ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT ENTRY MODAL -->
+<div class="modal-overlay no-print" id="editModal">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header" style="background:var(--warning)">
+      <h3>✏️ এন্ট্রি এডিট করুন</h3>
+      <button class="modal-close" onclick="closeModal('editModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit_entry_id">
+      <div class="form-grid" style="margin-bottom:16px">
+        <div class="form-group">
+          <label>Student ID</label>
+          <input type="text" id="edit_sid">
+        </div>
+        <div class="form-group">
+          <label>ক্লাস রোল</label>
+          <input type="text" id="edit_roll">
+        </div>
+        <div class="form-group">
+          <label>শিক্ষার্থীর নাম</label>
+          <input type="text" id="edit_name">
+        </div>
+        <div class="form-group">
+          <label>কোর্স</label>
+          <select id="edit_course">
+            <option value="">নির্বাচন করুন</option>
+            <option>B.Sc. in Nursing</option>
+            <option>Diploma in Nursing Science & Midwifery</option>
+            <option>Diploma in Nursing Midwifery</option>
+            <option>Post Basic B.Sc.</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>সেশন</label>
+          <select id="edit_session">
+            <option value="">নির্বাচন করুন</option>
+            <option>2020-21</option><option>2021-22</option>
+            <option>2022-23</option><option>2023-24</option>
+            <option>2024-25</option><option>2025-26</option>
+            <option>2026-27</option><option>2027-28</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>মোবাইল</label>
+          <input type="text" id="edit_mobile">
+        </div>
+        <div class="form-group">
+          <label>তারিখ</label>
+          <input type="date" id="edit_date">
+        </div>
+        <div class="form-group">
+          <label>মাস</label>
+          <input type="month" id="edit_month">
+        </div>
+        <div class="form-group">
+          <label>মন্তব্য</label>
+          <input type="text" id="edit_remark">
+        </div>
+      </div>
+
+      <!-- Edit fee items -->
+      <div style="font-size:14px;font-weight:600;color:var(--primary);margin-bottom:8px;border-bottom:2px solid var(--accent);padding-bottom:6px">💳 ফি খাত সম্পাদনা</div>
+      <div id="editFeeList" style="margin-bottom:12px"></div>
+
+      <!-- Add new fee row in edit -->
+      <div class="fee-add-row" style="margin-bottom:0">
+        <div>
+          <label>গ্রুপ</label>
+          <select id="efee_group" onchange="updateEditKhatDrop()">
+            <option value="">-- গ্রুপ --</option>
+          </select>
+        </div>
+        <div>
+          <label>খাত</label>
+          <select id="efee_khat">
+            <option value="">-- খাত --</option>
+          </select>
+        </div>
+        <div>
+          <label>পরিমাণ</label>
+          <input type="number" id="efee_amount" placeholder="০" min="0"
+                 onkeydown="if(event.key==='Enter') addEditFeeItem()">
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" onclick="addEditFeeItem()" style="width:100%;padding:9px 14px">➕ যোগ</button>
+        </div>
+      </div>
+
+      <div id="editSaveAlert" class="hidden alert alert-success mt-10">✅ সফলভাবে আপডেট হয়েছে!</div>
+    </div>
+    <div style="padding:14px 22px;border-top:1px solid #eee" class="btn-row">
+      <button class="btn btn-success" onclick="saveEditEntry()">💾 আপডেট করুন</button>
+      <button class="btn btn-outline" onclick="closeModal('editModal')">বাতিল করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay no-print" id="deleteModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header" style="background:var(--danger)">
+      <h3>🗑️ এন্ট্রি মুছে ফেলুন</h3>
+      <button class="modal-close" onclick="closeModal('deleteModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-danger" style="margin-bottom:14px">
+        ⚠️ এই এন্ট্রিটি স্থায়ীভাবে মুছে যাবে। এটি পুনরুদ্ধার করা যাবে না!
+      </div>
+      <div id="deleteEntryInfo" style="background:#f8f9fa;border:1px solid #dee2e6;border-radius:7px;padding:14px;font-size:13px"></div>
+      <input type="hidden" id="delete_entry_id">
+    </div>
+    <div style="padding:14px 22px;border-top:1px solid #eee" class="btn-row">
+      <button class="btn btn-danger" onclick="confirmDelete()">🗑️ হ্যাঁ, মুছে ফেলুন</button>
+      <button class="btn btn-outline" onclick="closeModal('deleteModal')">না, বাতিল করুন</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== FEE CATEGORIES (60 খাত) =====
+const FEE_CATEGORIES = [
+  // ভর্তি সংক্রান্ত
+  { group: "ভর্তি সংক্রান্ত ফি", items: [
+    "ভর্তি ফি (Admission Fee)",
+    "রেজিস্ট্রেশন ফি (Registration Fee)",
+    "ফরম ফি (Form Fee)",
+    "ভর্তি প্রক্রিয়াকরণ ফি (Admission Processing Fee)",
+  ]},
+  // টিউশন ও শিক্ষা
+  { group: "টিউশন ও শিক্ষা ফি", items: [
+    "টিউশন ফি (Tuition Fee)",
+    "ক্লাস ফি (Class Fee)",
+    "ল্যাব ফি (Lab Fee)",
+    "ক্লিনিক্যাল ফি (Clinical Fee)",
+    "প্র্যাকটিক্যাল ফি (Practical Fee)",
+    "প্রদর্শনী ফি (Demonstration Fee)",
+  ]},
+  // পরীক্ষা সংক্রান্ত
+  { group: "পরীক্ষা সংক্রান্ত ফি", items: [
+    "টেস্ট পরীক্ষা ফি (Test Exam Fee)",
+    "প্রি-টেস্ট ফি (Pre-test Fee)",
+    "ইন্টার্নাল পরীক্ষা ফি (Internal Exam Fee)",
+    "বিএসসি ফরম পুরণ ফি (BSC Form Fillup Fee)",
+    "ডিপ্লোমা ফরম পুরণ ফি (DNSM/DM Form Fillup Fee)",
+    "কম্প্রিহেন্সিভ পরীক্ষা ফি (Comprehensiv Exam Fee)",
+    "পুনঃ পরীক্ষা ফি (Re-exam Fee)",
+    "ফলাফল ফি (Result Fee)",
+  ]},
+  // আবাসিক ও হোস্টেল
+  { group: "আবাসিক ও হোস্টেল ফি", items: [
+    "হোস্টেল ভাড়া (Hostel Rent)",
+    "হোস্টেল ভর্তি ফি (Hostel Admission Fee)",
+    "ডাইনিং ফি (Dining Fee)",
+    "বিদ্যুৎ বিল (Electricity Bill)",
+    "পানি বিল (Water Bill)",
+    "গ্যাস বিল (Gas Bill)",
+    "পরিষ্কার ফি (Cleaning Fee)",
+  ]},
+  // লাইব্রেরি ও প্রযুক্তি
+  { group: "লাইব্রেরি ও প্রযুক্তি ফি", items: [
+    "লাইব্রেরি ফি (Library Fee)",
+    "লাইব্রেরি জরিমানা (Library Fine)",
+    "কম্পিউটার ফি (Computer Fee)",
+    "ইন্টারনেট ফি (Internet Fee)",
+    "আইটি ফি (IT Fee)",
+  ]},
+  // সার্টিফিকেট ও ডকুমেন্ট
+  { group: "সার্টিফিকেট ও ডকুমেন্ট ফি", items: [
+    "সার্টিফিকেট ফি (Certificate Fee)",
+    "মার্কশীট ফি (Marksheet Fee)",
+    "প্রশংসাপত্র ফি (Testimonial Fee)",
+    "ট্রান্সক্রিপ্ট ফি (Transcript Fee)",
+    "মাইগ্রেশন সার্টিফিকেট ফি (Migration Certificate Fee)",
+    "অরিজিনাল সার্টিফিকেট ফি (Original Certificate Fee)",
+    "ডুপ্লিকেট সার্টিফিকেট ফি (Duplicate Certificate Fee)",
+  ]},
+  // স্বাস্থ্য ও কল্যাণ
+  { group: "স্বাস্থ্য ও কল্যাণ ফি", items: [
+    "মেডিকেল ফি (Medical Fee)",
+    "স্বাস্থ্য পরীক্ষা ফি (Health Check-up Fee)",
+    "ইউনিফর্ম ফি (Uniform Fee)",
+    "লগো ফি (LogO Fee)",
+    "নার্সিং কিট ফি (Nursing Kit Fee)",
+  ]},
+  // খেলাধুলা ও সংস্কৃতি
+  { group: "খেলাধুলা ও সাংস্কৃতিক ফি", items: [
+    "খেলাধুলা ফি (Sports Fee)",
+    "সাংস্কৃতিক ফি (Cultural Fee)",
+    "ক্লাব ফি (Club Fee)",
+    "বার্ষিকী ফি (Annual Function Fee)",
+  ]},
+  // উন্নয়ন ও অবকাঠামো
+  { group: "উন্নয়ন ও অবকাঠামো ফি", items: [
+    "উন্নয়ন ফি (Development Fee)",
+    "ভবন ফি (Building Fee)",
+    "রক্ষণাবেক্ষণ ফি (Maintenance Fee)",
+    "ফার্নিচার ফি (Furniture Fee)",
+  ]},
+  // বিবিধ
+  { group: "বিবিধ ফি", items: [
+    "পরিচয়পত্র ফি (ID Card Fee)",
+    "পরিচয়পত্র পুনঃইস্যু ফি (ID Card Re-issue Fee)",
+    "বার্ষিক ফি (Annual Fee)",
+    "সেশন ফি (Session Fee)",
+    "উপস্থিতি ফি (Attendance Fee)",
+    "গ্রন্থাগার সদস্যতা (Library Membership)",
+    "নোটবুক/স্টেশনারি ফি (Notebook/Stationery Fee)",
+    "শিক্ষা সফর ফি (Study Tour Fee)",
+    "বিলম্ব জরিমানা (Late Fine)",
+    "প্রকল্প ফি (Project Fee)",
+    "অনুমোদন ফি (Approval Fee)",
+    "বিএনএমসি নিবন্ধন ফি (BNMC Registration Fee)",
+    "বিএনএমসি পুনঃনিবন্ধন ফি (BNMC Re-registration Fee)",
+    "বিবিধ ফি (Miscellaneous Fee)",
+  ]},
+];
+
+// Current fee items list
+let addedFees = []; // [{name, amount}]
+
+// =============================================
+// ⚙️  Google Sheets API CONFIG
+// Apps Script Web App URL এখানে পেস্ট করুন:
+// =============================================
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+// =============================================
+
+// Local cache (offline fallback)
+let db = JSON.parse(localStorage.getItem('mrf_fee_db') || '{"entries":[]}');
+function saveLocalDB() { localStorage.setItem('mrf_fee_db', JSON.stringify(db)); }
+
+// ===== CONNECTION STATUS =====
+let isOnline = false;
+function setStatus(online, msg) {
+  isOnline = online;
+  const bar = document.getElementById('statusBar');
+  bar.textContent = msg;
+  bar.style.background = online ? '#d4edda' : '#fff3cd';
+  bar.style.color = online ? '#155724' : '#856404';
+  bar.style.display = 'block';
+}
+
+// ===== LOADING BAR =====
+function showLoading(msg = 'লোড হচ্ছে...') {
+  document.getElementById('loadingBar').style.display = 'block';
+  document.getElementById('loadingBar').textContent = '⏳ ' + msg;
+}
+function hideLoading() {
+  document.getElementById('loadingBar').style.display = 'none';
+}
+
+// ===== GOOGLE SHEETS API CALL =====
+async function sheetsAPI(params) {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    throw new Error('Apps Script URL সেট করা নেই!');
+  }
+  const url = APPS_SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+  const res = await fetch(url, { redirect: 'follow' });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+
+async function sheetsAPIPost(body) {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    throw new Error('Apps Script URL সেট করা নেই!');
+  }
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+
+// ===== LOAD ALL DATA FROM SHEETS =====
+async function loadFromSheets() {
+  showLoading('Google Sheets থেকে ডেটা লোড হচ্ছে...');
+  try {
+    const result = await sheetsAPI({ action: 'getAll' });
+    db.entries = result.entries || [];
+    saveLocalDB();
+    setStatus(true, '✅ Google Sheets সংযুক্ত — সব ডেটা লোড হয়েছে (' + db.entries.length + 'টি এন্ট্রি)');
+    updateDashboard();
+  } catch(err) {
+    setStatus(false, '⚠️ Google Sheets সংযোগ নেই — Local ডেটা দেখাচ্ছে। (' + err.message + ')');
+    updateDashboard();
+  } finally {
+    hideLoading();
+  }
+}
+
+// ===== INIT DROPDOWNS =====
+function buildDropdowns() {
+  const groupSel = document.getElementById('fee_group_sel');
+  FEE_CATEGORIES.forEach((g, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = g.group;
+    groupSel.appendChild(opt);
+  });
+
+  // Quick add buttons (most common fees)
+  const QUICK = [
+    "টিউশন ফি (Tuition Fee)",
+    "পরীক্ষা ফি (Exam Fee)",
+    "হোস্টেল ভাড়া (Hostel Rent)",
+    "ভর্তি ফি (Admission Fee)",
+    "লাইব্রেরি ফি (Library Fee)",
+    "ইউনিফর্ম ফি (Uniform Fee)",
+    "বার্ষিক ফি (Annual Fee)",
+    "বিলম্ব জরিমানা (Late Fine)",
+  ];
+  const qDiv = document.getElementById('quickAddBtns');
+  QUICK.forEach(name => {
+    const b = document.createElement('button');
+    b.className = 'btn btn-sm btn-outline';
+    b.style.cssText = 'font-size:12px;padding:5px 10px;border-color:var(--border);color:var(--text)';
+    b.textContent = '+ ' + name.split('(')[0].trim();
+    b.onclick = () => quickAdd(name);
+    qDiv.appendChild(b);
+  });
+}
+
+function updateKhatDropdown() {
+  const gIdx = document.getElementById('fee_group_sel').value;
+  const kSel = document.getElementById('fee_khat_sel');
+  kSel.innerHTML = '';
+  if (gIdx === '') {
+    kSel.innerHTML = '<option value="">-- প্রথমে গ্রুপ নির্বাচন করুন --</option>';
+    return;
+  }
+  kSel.innerHTML = '<option value="">-- খাত নির্বাচন করুন --</option>';
+  FEE_CATEGORIES[parseInt(gIdx)].items.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item;
+    opt.textContent = item;
+    kSel.appendChild(opt);
+  });
+  document.getElementById('fee_amount_inp').focus();
+}
+
+function addFeeItem(name, amount) {
+  const feeName = name || document.getElementById('fee_khat_sel').value;
+  const feeAmount = parseFloat(amount || document.getElementById('fee_amount_inp').value) || 0;
+
+  if (!feeName) { alert('অনুগ্রহ করে একটি খাত নির্বাচন করুন।'); return; }
+  if (feeAmount <= 0) {
+    document.getElementById('fee_amount_inp').focus();
+    document.getElementById('fee_amount_inp').select();
+    if (!name) alert('পরিমাণ (টাকা) লিখুন।');
+    return;
+  }
+
+  // If already added, update amount
+  const existing = addedFees.findIndex(f => f.name === feeName);
+  if (existing >= 0) {
+    addedFees[existing].amount += feeAmount;
+  } else {
+    addedFees.push({ name: feeName, amount: feeAmount });
+  }
+
+  // Reset inputs
+  document.getElementById('fee_khat_sel').value = '';
+  document.getElementById('fee_amount_inp').value = '';
+  document.getElementById('fee_group_sel').value = '';
+  document.getElementById('fee_khat_sel').innerHTML = '<option value="">-- প্রথমে গ্রুপ নির্বাচন করুন --</option>';
+
+  renderFeeList();
+}
+
+function quickAdd(name) {
+  // Pre-select the name and focus amount
+  // Find the group
+  for (let i = 0; i < FEE_CATEGORIES.length; i++) {
+    if (FEE_CATEGORIES[i].items.includes(name)) {
+      document.getElementById('fee_group_sel').value = i;
+      updateKhatDropdown();
+      document.getElementById('fee_khat_sel').value = name;
+      break;
+    }
+  }
+  document.getElementById('fee_amount_inp').focus();
+}
+
+function removeFeeItem(idx) {
+  addedFees.splice(idx, 1);
+  renderFeeList();
+}
+
+function updateFeeAmount(idx, val) {
+  addedFees[idx].amount = parseFloat(val) || 0;
+  calcTotal();
+}
+
+function renderFeeList() {
+  const container = document.getElementById('feeAddedContainer');
+  if (addedFees.length === 0) {
+    container.innerHTML = `<div class="empty-fee-msg">এখনো কোনো খাত যোগ করা হয়নি। উপরের ড্রপডাউন থেকে খাত নির্বাচন করুন।</div>`;
+    calcTotal();
+    return;
+  }
+
+  let rows = addedFees.map((f, i) => {
+    const bn = f.name.split('(')[0].trim();
+    const en = f.name.match(/\(([^)]+)\)/)?.[1] || '';
+    return `
+    <div class="fee-item-row">
+      <div class="fee-item-num">${i+1}</div>
+      <div class="fee-item-name">${bn}<small>${en}</small></div>
+      <div class="fee-item-amount">
+        <input type="number" value="${f.amount}" min="0"
+               oninput="updateFeeAmount(${i}, this.value)"
+               onchange="updateFeeAmount(${i}, this.value)">
+      </div>
+      <div class="fee-item-del">
+        <button onclick="removeFeeItem(${i})" title="মুছুন">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="fee-list-header">
+      <div>#</div>
+      <div>খাতের নাম</div>
+      <div style="text-align:right">পরিমাণ (৳)</div>
+      <div></div>
+    </div>
+    <div class="fee-added-list">${rows}</div>`;
+
+  calcTotal();
+}
+
+function calcTotal() {
+  const total = addedFees.reduce((s, f) => s + (f.amount || 0), 0);
+  document.getElementById('grandTotal').textContent = numFmt(total);
+  document.getElementById('feeCount').textContent = addedFees.length;
+}
+
+function getFormData() {
+  return {
+    sid: document.getElementById('c_sid').value.trim(),
+    roll: document.getElementById('c_roll').value.trim(),
+    name: document.getElementById('c_name').value.trim(),
+    course: document.getElementById('c_course').value,
+    session: document.getElementById('c_session').value,
+    mobile: document.getElementById('c_mobile').value.trim(),
+    date: document.getElementById('c_date').value,
+    month: document.getElementById('c_month').value,
+    remark: document.getElementById('c_remark').value.trim(),
+  };
+}
+
+function getFeeData() {
+  const fees = {};
+  addedFees.forEach(f => { if (f.amount > 0) fees[f.name] = f.amount; });
+  const total = Object.values(fees).reduce((s, v) => s + v, 0);
+  return { fees, total };
+}
+
+async function saveEntry() {
+  const f = getFormData();
+  const { fees, total } = getFeeData();
+  if (!f.sid || !f.name || !f.date) {
+    alert('Student ID, নাম এবং তারিখ অবশ্যই পূরণ করুন।');
+    return;
+  }
+  if (total === 0) {
+    alert('কমপক্ষে একটি খাতে টাকার পরিমাণ লিখুন।');
+    return;
+  }
+  const id = Date.now();
+  const entry = { id, ...f, fees, total, savedAt: new Date().toISOString() };
+  showLoading('Google Sheets-এ সংরক্ষণ হচ্ছে...');
+  try {
+    await sheetsAPIPost({ action: 'save', id, ...f, fees: JSON.stringify(fees), total });
+    db.entries.unshift(entry);
+    saveLocalDB();
+    hideLoading();
+    setStatus(true, '✅ Google Sheets-এ সফলভাবে সংরক্ষিত!');
+  } catch(e) {
+    db.entries.unshift(entry);
+    saveLocalDB();
+    hideLoading();
+    setStatus(false, '⚠️ Offline — Local-এ সংরক্ষিত। ইন্টারনেট আসলে Sync করুন।');
+  }
+  const alert_ = document.getElementById('saveAlert');
+  alert_.classList.remove('hidden');
+  setTimeout(() => alert_.classList.add('hidden'), 3000);
+  updateDashboard();
+  clearForm();
+}
+
+function clearForm() {
+  ['c_sid','c_roll','c_name','c_mobile','c_remark'].forEach(id => document.getElementById(id).value = '');
+  ['c_course','c_session'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('c_date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('c_month').value = new Date().toISOString().slice(0,7);
+  // Reset fee dropdowns
+  document.getElementById('fee_group_sel').value = '';
+  document.getElementById('fee_khat_sel').innerHTML = '<option value="">-- প্রথমে গ্রুপ নির্বাচন করুন --</option>';
+  document.getElementById('fee_amount_inp').value = '';
+  // Clear added fees
+  addedFees = [];
+  renderFeeList();
+}
+
+function autoFillStudent() {
+  const sid = document.getElementById('c_sid').value.trim();
+  if (!sid || sid.length < 3) return;
+  const last = db.entries.find(e => e.sid === sid);
+  if (last) {
+    document.getElementById('c_roll').value    = last.roll    || '';
+    document.getElementById('c_name').value    = last.name    || '';
+    document.getElementById('c_course').value  = last.course  || '';
+    document.getElementById('c_session').value = last.session || '';
+    document.getElementById('c_mobile').value  = last.mobile  || '';
+  }
+}
+
+// ===== RECEIPT =====
+function printReceipt() {
+  const f = getFormData();
+  const { fees, total } = getFeeData();
+  if (!f.sid || !f.name || total === 0) {
+    alert('তথ্য পূরণ করুন এবং কমপক্ষে একটি খাতে টাকা লিখুন।');
+    return;
+  }
+  let rows = '';
+  Object.entries(fees).forEach(([k, v]) => {
+    rows += `<tr><td>${k}</td><td style="text-align:right">৳ ${numFmt(v)}</td></tr>`;
+  });
+  const html = `
+    <div style="font-family:'Hind Siliguri',sans-serif;max-width:500px;margin:0 auto">
+      <div style="text-align:center;border-bottom:2px solid #1a3a5c;padding-bottom:12px;margin-bottom:16px">
+        <div style="font-size:18px;font-weight:700;color:#1a3a5c">মজিবর রহমান ফাউন্ডেশন নার্সিং কলেজ</div>
+        <div style="font-size:13px;color:#555;margin-top:3px">Mojibor Rahman Foundation Nursing College</div>
+        <div style="font-size:13px;margin-top:6px;background:#f0f4f8;padding:5px;border-radius:5px">
+          <strong>ফি প্রাপ্তি রশিদ</strong>
+        </div>
+      </div>
+      <table style="width:100%;font-size:13px;margin-bottom:12px;border-collapse:collapse">
+        <tr><td style="padding:4px 0;width:50%"><strong>Student ID:</strong></td><td>${f.sid}</td></tr>
+        <tr><td><strong>ক্লাস রোল:</strong></td><td>${f.roll || '-'}</td></tr>
+        <tr><td><strong>নাম:</strong></td><td>${f.name}</td></tr>
+        <tr><td><strong>কোর্স:</strong></td><td>${f.course || '-'}</td></tr>
+        <tr><td><strong>সেশন:</strong></td><td>${f.session || '-'}</td></tr>
+        <tr><td><strong>মোবাইল:</strong></td><td>${f.mobile || '-'}</td></tr>
+        <tr><td><strong>তারিখ:</strong></td><td>${f.date}</td></tr>
+        ${f.month ? `<tr><td><strong>মাস:</strong></td><td>${f.month}</td></tr>` : ''}
+      </table>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid #ccc;border-radius:6px;overflow:hidden">
+        <thead><tr style="background:#1a3a5c;color:white">
+          <th style="padding:8px 12px;text-align:left">খাতের নাম</th>
+          <th style="padding:8px 12px;text-align:right">পরিমাণ</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr style="background:#f0f4f8;font-weight:700">
+          <td style="padding:8px 12px">সর্বমোট</td>
+          <td style="padding:8px 12px;text-align:right;color:#1a3a5c;font-size:15px">৳ ${numFmt(total)}</td>
+        </tr></tfoot>
+      </table>
+      ${f.remark ? `<div style="margin-top:10px;font-size:12px;color:#555">মন্তব্য: ${f.remark}</div>` : ''}
+      <div style="display:flex;justify-content:space-between;margin-top:28px;padding-top:14px;border-top:1px dashed #ccc;font-size:12px;color:#777">
+        <div>গ্রাহকের স্বাক্ষর: _______________</div>
+        <div>ক্যাশিয়ারের স্বাক্ষর: _______________</div>
+      </div>
+    </div>`;
+  document.getElementById('receiptContent').innerHTML = html;
+  document.getElementById('receiptModal').classList.add('open');
+}
+
+function doPrint(id) {
+  const content = document.getElementById(id).innerHTML;
+  const w = window.open('', '', 'width=700,height=600');
+  w.document.write(`<html><head>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body{font-family:'Hind Siliguri',sans-serif;padding:20px} @page{margin:10mm}</style>
+    </head><body>${content}</body></html>`);
+  w.document.close();
+  setTimeout(() => { w.print(); w.close(); }, 600);
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// ===== DASHBOARD =====
+function updateDashboard() {
+  const total = db.entries.reduce((s, e) => s + (e.total||0), 0);
+  const students = new Set(db.entries.map(e => e.sid)).size;
+  const thisMonth = new Date().toISOString().slice(0,7);
+  const monthly = db.entries.filter(e => e.date && e.date.slice(0,7) === thisMonth).reduce((s,e)=>s+e.total,0);
+
+  document.getElementById('statGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${students}</div><div class="stat-label">মোট শিক্ষার্থী</div></div>
+    <div class="stat-card accent"><div class="stat-value">${db.entries.length}</div><div class="stat-label">মোট এন্ট্রি</div></div>
+    <div class="stat-card success"><div class="stat-value">৳${numFmt(total)}</div><div class="stat-label">সর্বমোট আদায়</div></div>
+    <div class="stat-card warning"><div class="stat-value">৳${numFmt(monthly)}</div><div class="stat-label">এ মাসে আদায়</div></div>
+  `;
+  const tbody = document.getElementById('recentTbody');
+  const recent = db.entries.slice(0, 10);
+  if (recent.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:20px">কোনো এন্ট্রি নেই</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = recent.map(e => `
+    <tr>
+      <td>${e.date}</td>
+      <td><strong>${e.sid}</strong></td>
+      <td>${e.name}</td>
+      <td><span class="badge badge-info">${e.course||'-'}</span></td>
+      <td>${Object.keys(e.fees||{}).length} টি</td>
+      <td class="text-right fw-600 text-success">৳ ${numFmt(e.total)}</td>
+      <td><div style="display:flex;gap:5px">
+        <button class="btn btn-sm" style="background:#fff3cd;color:#856404;border:1px solid #ffc107;padding:4px 10px;font-size:12px" onclick="openEditModal(${e.id})">✏️ এডিট</button>
+        <button class="btn btn-sm" style="background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;padding:4px 10px;font-size:12px" onclick="openDeleteModal(${e.id})">🗑️ ডিলিট</button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+// ===== STUDENTS =====
+function filterStudents() {
+  const q = document.getElementById('st_search').value.toLowerCase();
+  const course = document.getElementById('st_course').value;
+  const filtered = db.entries.filter(e => {
+    const matchQ = !q || (e.sid+e.name+(e.roll||'')).toLowerCase().includes(q);
+    const matchC = !course || e.course === course;
+    return matchQ && matchC;
+  });
+  // Aggregate by student
+  const students = {};
+  filtered.forEach(e => {
+    if (!students[e.sid]) students[e.sid] = { sid:e.sid, roll:e.roll, name:e.name, course:e.course, session:e.session, mobile:e.mobile, total:0 };
+    students[e.sid].total += e.total;
+    students[e.sid].roll = e.roll || students[e.sid].roll;
+  });
+  const rows = Object.values(students);
+  if (rows.length === 0) {
+    document.getElementById('studentTbody').innerHTML = `<tr><td colspan="9" class="text-center text-muted" style="padding:20px">কোনো শিক্ষার্থী নেই</td></tr>`;
+    return;
+  }
+  document.getElementById('studentTbody').innerHTML = rows.map((s,i) => `
+    <tr>
+      <td>${i+1}</td><td><strong>${s.sid}</strong></td><td>${s.roll||'-'}</td>
+      <td>${s.name}</td><td><span class="badge badge-info">${s.course||'-'}</span></td>
+      <td>${s.session||'-'}</td><td>${s.mobile||'-'}</td>
+      <td class="text-right fw-600 text-success">৳ ${numFmt(s.total)}</td>
+      <td><button class="btn btn-sm btn-outline" onclick="goHistory('${s.sid}')">📋 হিস্ট্রি</button></td>
+    </tr>
+  `).join('');
+}
+
+// ===== HISTORY =====
+function goHistory(sid) {
+  showSection('search');
+  document.getElementById('h_sid').value = sid;
+  searchHistory();
+}
+
+function searchHistory() {
+  const sid  = document.getElementById('h_sid').value.trim();
+  const from = document.getElementById('h_from').value;
+  const to   = document.getElementById('h_to').value;
+  if (!sid) { document.getElementById('historyResult').innerHTML = `<div class="alert alert-info">Student ID লিখুন।</div>`; return; }
+  const entries = db.entries.filter(e => {
+    if (e.sid !== sid) return false;
+    if (from && e.date < from) return false;
+    if (to && e.date > to) return false;
+    return true;
+  });
+  if (entries.length === 0) {
+    document.getElementById('historyResult').innerHTML = `<div class="alert alert-danger">কোনো তথ্য পাওয়া যায়নি।</div>`; return;
+  }
+  const s = entries[0];
+  const totalPaid = entries.reduce((sum,e)=>sum+e.total,0);
+  let tableRows = entries.map((e,i) => {
+    const feeList = Object.entries(e.fees||{}).map(([k,v])=>`${k}: ৳${numFmt(v)}`).join(', ');
+    return `<tr>
+      <td>${i+1}</td><td>${e.date}</td><td>${e.month||'-'}</td>
+      <td>${Object.keys(e.fees||{}).length} টি</td>
+      <td style="font-size:12px;max-width:260px">${feeList}</td>
+      <td class="text-right fw-600 text-success">৳ ${numFmt(e.total)}</td>
+      <td>${e.remark||'-'}</td>
+      <td class="no-print"><div style="display:flex;gap:4px">
+        <button class="btn btn-sm" style="background:#fff3cd;color:#856404;border:1px solid #ffc107;padding:3px 8px;font-size:11px" onclick="openEditModal(${e.id})">✏️</button>
+        <button class="btn btn-sm" style="background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;padding:3px 8px;font-size:11px" onclick="openDeleteModal(${e.id},true)">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('historyResult').innerHTML = `
+    <div id="historyPrintArea">
+      <div class="print-header-block" style="text-align:center;margin-bottom:16px;border-bottom:2px solid #1a3a5c;padding-bottom:10px">
+        <h2 style="font-size:16px;color:#1a3a5c">মজিবর রহমান ফাউন্ডেশন নার্সিং কলেজ</h2>
+        <p style="font-size:12px;color:#555">ফি পেমেন্ট হিস্ট্রি রিপোর্ট</p>
+      </div>
+      <div class="report-summary">
+        <strong>${s.name}</strong> | ID: ${s.sid} | রোল: ${s.roll||'-'} | কোর্স: ${s.course||'-'} | মোবাইল: ${s.mobile||'-'}
+        <br>মোট: <strong style="color:var(--success)">${entries.length} বার</strong> | সর্বমোট: <strong style="color:var(--primary)">৳ ${numFmt(totalPaid)}</strong>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>তারিখ</th><th>মাস</th><th>খাত</th><th>বিবরণ</th><th class="text-right">পরিমাণ</th><th>মন্তব্য</th><th class="no-print">Action</th></tr></thead>
+        <tbody>${tableRows}</tbody>
+        <tfoot><tr style="background:#e8f0fa;font-weight:700">
+          <td colspan="5" style="padding:9px 12px">সর্বমোট</td>
+          <td class="text-right" style="padding:9px 12px;color:var(--success)">৳ ${numFmt(totalPaid)}</td>
+          <td></td><td class="no-print"></td>
+        </tr></tfoot>
+      </table></div>
+    </div>`;
+}
+
+function printHistory() {
+  const el = document.getElementById('historyPrintArea');
+  if (!el) { alert('আগে হিস্ট্রি লোড করুন।'); return; }
+  doPrint('historyPrintArea');
+}
+
+// ===== REPORTS =====
+function showReport(type) {
+  document.getElementById('rpt-khat').classList.add('hidden');
+  document.getElementById('rpt-monthly').classList.add('hidden');
+  document.getElementById('rpt-' + type).classList.remove('hidden');
+  const now = new Date().toISOString().split('T')[0];
+  if (type === 'khat') {
+    if (!document.getElementById('khat_to').value) {
+      document.getElementById('khat_to').value = now;
+      document.getElementById('khat_from').value = now.slice(0,7) + '-01';
+    }
+    genKhatReport();
+  } else {
+    if (!document.getElementById('m_month').value) document.getElementById('m_month').value = now.slice(0,7);
+    genMonthlyReport();
+  }
+}
+
+function hideReport(type) { document.getElementById('rpt-' + type).classList.add('hidden'); }
+
+function genKhatReport() {
+  const from = document.getElementById('khat_from').value;
+  const to   = document.getElementById('khat_to').value;
+  const course = document.getElementById('khat_course').value;
+  const entries = db.entries.filter(e => {
+    if (from && e.date < from) return false;
+    if (to && e.date > to) return false;
+    if (course && e.course !== course) return false;
+    return true;
+  });
+  const khatTotals = {};
+  entries.forEach(e => Object.entries(e.fees||{}).forEach(([k,v]) => { khatTotals[k]=(khatTotals[k]||0)+v; }));
+  const sorted = Object.entries(khatTotals).sort((a,b)=>b[1]-a[1]);
+  const grandTotal = sorted.reduce((s,[,v])=>s+v,0);
+  if (sorted.length === 0) { document.getElementById('khatReportContent').innerHTML = `<div class="alert alert-info">নির্বাচিত সময়সীমায় কোনো তথ্য নেই।</div>`; return; }
+  let rows = sorted.map(([k,v],i)=>`<tr><td>${i+1}</td><td>${k}</td><td class="text-right fw-600">৳ ${numFmt(v)}</td><td class="text-right">${((v/grandTotal)*100).toFixed(1)}%</td></tr>`).join('');
+  document.getElementById('khatReportContent').innerHTML = `
+    <div id="khatPrintArea">
+      <div class="print-header-block" style="text-align:center;margin-bottom:16px;border-bottom:2px solid #1a3a5c;padding-bottom:10px">
+        <h2 style="font-size:16px;color:#1a3a5c">মজিবর রহমান ফাউন্ডেশন নার্সিং কলেজ</h2>
+        <p style="font-size:12px;color:#555">খাত অনুযায়ী ফি আদায় রিপোর্ট — ${from||'শুরু'} থেকে ${to||'এখন'} ${course?'| '+course:''}</p>
+      </div>
+      <div class="report-summary">মোট এন্ট্রি: <strong>${entries.length}</strong> | সক্রিয় খাত: <strong>${sorted.length}</strong> | সর্বমোট: <strong style="color:var(--success)">৳ ${numFmt(grandTotal)}</strong></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>খাতের নাম</th><th class="text-right">মোট আদায়</th><th class="text-right">শতাংশ</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr style="background:#e8f0fa;font-weight:700">
+          <td colspan="2" style="padding:9px 12px">সর্বমোট</td>
+          <td class="text-right" style="padding:9px 12px;color:var(--success)">৳ ${numFmt(grandTotal)}</td>
+          <td class="text-right" style="padding:9px 12px">১০০%</td>
+        </tr></tfoot>
+      </table></div>
+    </div>`;
+}
+
+function printKhatReport() {
+  if (!document.getElementById('khatPrintArea')) { alert('আগে রিপোর্ট তৈরি করুন।'); return; }
+  doPrint('khatPrintArea');
+}
+
+function genMonthlyReport() {
+  const month = document.getElementById('m_month').value;
+  const course = document.getElementById('m_course').value;
+  if (!month) { alert('মাস নির্বাচন করুন।'); return; }
+  const entries = db.entries.filter(e => e.date && e.date.slice(0,7) === month && (!course || e.course === course));
+  if (entries.length === 0) { document.getElementById('monthlyReportContent').innerHTML = `<div class="alert alert-info">এই মাসে কোনো এন্ট্রি নেই।</div>`; return; }
+  const grandTotal = entries.reduce((s,e)=>s+e.total,0);
+  const students = new Set(entries.map(e=>e.sid)).size;
+  const daily = {};
+  entries.forEach(e=>{ daily[e.date]=(daily[e.date]||0)+e.total; });
+  const [yr,mo] = month.split('-');
+  const monthNames=['','জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+  let rows = entries.map((e,i)=>`<tr><td>${i+1}</td><td>${e.date}</td><td><strong>${e.sid}</strong></td><td>${e.name}</td><td>${e.course||'-'}</td><td>${Object.keys(e.fees||{}).length} টি</td><td class="text-right fw-600 text-success">৳ ${numFmt(e.total)}</td></tr>`).join('');
+  let dailyRows = Object.entries(daily).sort().map(([d,v])=>`<tr><td>${d}</td><td class="text-right fw-600">৳ ${numFmt(v)}</td></tr>`).join('');
+  document.getElementById('monthlyReportContent').innerHTML = `
+    <div id="monthlyPrintArea">
+      <div class="print-header-block" style="text-align:center;margin-bottom:16px;border-bottom:2px solid #1a3a5c;padding-bottom:10px">
+        <h2 style="font-size:16px;color:#1a3a5c">মজিবর রহমান ফাউন্ডেশন নার্সিং কলেজ</h2>
+        <p style="font-size:12px;color:#555">মাসিক ফি আদায় রিপোর্ট — ${monthNames[parseInt(mo)]} ${yr} ${course?'| '+course:''}</p>
+      </div>
+      <div class="report-summary">মোট এন্ট্রি: <strong>${entries.length}</strong> | ভিন্ন শিক্ষার্থী: <strong>${students}</strong> | সর্বমোট: <strong style="color:var(--success)">৳ ${numFmt(grandTotal)}</strong></div>
+      <div style="display:grid;grid-template-columns:3fr 1fr;gap:16px">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--primary);margin-bottom:8px">বিস্তারিত তালিকা</div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>তারিখ</th><th>Student ID</th><th>নাম</th><th>কোর্স</th><th>খাত</th><th class="text-right">পরিমাণ</th></tr></thead>
+            <tbody>${rows}</tbody>
+            <tfoot><tr style="background:#e8f0fa;font-weight:700"><td colspan="6" style="padding:9px 12px">সর্বমোট</td><td class="text-right" style="padding:9px 12px;color:var(--success)">৳ ${numFmt(grandTotal)}</td></tr></tfoot>
+          </table></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--primary);margin-bottom:8px">দৈনিক সারসংক্ষেপ</div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>তারিখ</th><th class="text-right">আদায়</th></tr></thead>
+            <tbody>${dailyRows}</tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function printMonthlyReport() {
+  if (!document.getElementById('monthlyPrintArea')) { alert('আগে রিপোর্ট তৈরি করুন।'); return; }
+  doPrint('monthlyPrintArea');
+}
+
+// ===== SECTION NAVIGATION =====
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  const idx = ['dashboard','collect','students','search','reports'].indexOf(name);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  if (name === 'students') filterStudents();
+  if (name === 'dashboard') updateDashboard();
+}
+
+// ===== EDIT ENTRY =====
+let editFees = [];
+
+function openEditModal(entryId) {
+  const entry = db.entries.find(e => e.id === entryId);
+  if (!entry) { alert('এন্ট্রি খুঁজে পাওয়া যায়নি। Sync করুন।'); return; }
+  document.getElementById('edit_entry_id').value = entryId;
+  document.getElementById('edit_sid').value     = entry.sid     || '';
+  document.getElementById('edit_roll').value    = entry.roll    || '';
+  document.getElementById('edit_name').value    = entry.name    || '';
+  document.getElementById('edit_course').value  = entry.course  || '';
+  document.getElementById('edit_session').value = entry.session || '';
+  document.getElementById('edit_mobile').value  = entry.mobile  || '';
+  document.getElementById('edit_date').value    = entry.date    || '';
+  document.getElementById('edit_month').value   = entry.month   || '';
+  document.getElementById('edit_remark').value  = entry.remark  || '';
+  const gSel = document.getElementById('efee_group');
+  if (gSel.options.length <= 1) {
+    FEE_CATEGORIES.forEach((g,i) => { const o=document.createElement('option'); o.value=i; o.textContent=g.group; gSel.appendChild(o); });
+  }
+  editFees = Object.entries(entry.fees||{}).map(([name,amount])=>({name,amount:parseFloat(amount)}));
+  renderEditFeeList();
+  document.getElementById('editSaveAlert').classList.add('hidden');
+  document.getElementById('editModal').classList.add('open');
+}
+
+function updateEditKhatDrop() {
+  const gIdx = document.getElementById('efee_group').value;
+  const kSel = document.getElementById('efee_khat');
+  kSel.innerHTML = '';
+  if (gIdx === '') { kSel.innerHTML = '<option value="">-- খাত --</option>'; return; }
+  kSel.innerHTML = '<option value="">-- খাত নির্বাচন --</option>';
+  FEE_CATEGORIES[parseInt(gIdx)].items.forEach(item => { const o=document.createElement('option'); o.value=item; o.textContent=item; kSel.appendChild(o); });
+  document.getElementById('efee_amount').focus();
+}
+
+function addEditFeeItem() {
+  const name = document.getElementById('efee_khat').value;
+  const amount = parseFloat(document.getElementById('efee_amount').value)||0;
+  if (!name) { alert('খাত নির্বাচন করুন।'); return; }
+  if (amount<=0) { alert('পরিমাণ লিখুন।'); document.getElementById('efee_amount').focus(); return; }
+  const ex = editFees.findIndex(f=>f.name===name);
+  if (ex>=0) editFees[ex].amount+=amount; else editFees.push({name,amount});
+  document.getElementById('efee_group').value='';
+  document.getElementById('efee_khat').innerHTML='<option value="">-- খাত --</option>';
+  document.getElementById('efee_amount').value='';
+  renderEditFeeList();
+}
+
+function removeEditFee(idx) { editFees.splice(idx,1); renderEditFeeList(); }
+function updateEditFeeAmt(idx,val) { editFees[idx].amount=parseFloat(val)||0; }
+function recalcEditTotal() {}
+
+function renderEditFeeList() {
+  const container = document.getElementById('editFeeList');
+  if (editFees.length===0) { container.innerHTML=`<div class="empty-fee-msg" style="padding:12px">কোনো খাত নেই।</div>`; return; }
+  const total = editFees.reduce((s,f)=>s+(f.amount||0),0);
+  let rows = editFees.map((f,i)=>{
+    const bn=f.name.split('(')[0].trim(); const en=f.name.match(/\(([^)]+)\)/)?.[1]||'';
+    return `<div class="fee-item-row">
+      <div class="fee-item-num">${i+1}</div>
+      <div class="fee-item-name">${bn}<small>${en}</small></div>
+      <div class="fee-item-amount"><input type="number" value="${f.amount}" min="0" oninput="updateEditFeeAmt(${i},this.value)" onchange="updateEditFeeAmt(${i},this.value)"></div>
+      <div class="fee-item-del"><button onclick="removeEditFee(${i})" title="মুছুন">✕</button></div>
+    </div>`;
+  }).join('');
+  container.innerHTML = `
+    <div class="fee-list-header"><div>#</div><div>খাতের নাম</div><div style="text-align:right">পরিমাণ (৳)</div><div></div></div>
+    <div class="fee-added-list">${rows}</div>
+    <div style="text-align:right;padding:8px 12px;background:#e8f0fa;border-radius:0 0 7px 7px;font-weight:700;color:var(--primary)">মোট: ৳ ${numFmt(total)}</div>`;
+}
+
+async function saveEditEntry() {
+  const entryId = parseInt(document.getElementById('edit_entry_id').value);
+  const idx = db.entries.findIndex(e=>e.id===entryId);
+  if (idx<0) { alert('এন্ট্রি খুঁজে পাওয়া যায়নি।'); return; }
+  const fees={};
+  editFees.forEach(f=>{if(f.amount>0) fees[f.name]=f.amount;});
+  const total=Object.values(fees).reduce((s,v)=>s+v,0);
+  if (total===0) { alert('কমপক্ষে একটি খাতে টাকা থাকতে হবে।'); return; }
+  db.entries[idx]={...db.entries[idx],
+    sid:document.getElementById('edit_sid').value.trim(),
+    roll:document.getElementById('edit_roll').value.trim(),
+    name:document.getElementById('edit_name').value.trim(),
+    course:document.getElementById('edit_course').value,
+    session:document.getElementById('edit_session').value,
+    mobile:document.getElementById('edit_mobile').value.trim(),
+    date:document.getElementById('edit_date').value,
+    month:document.getElementById('edit_month').value,
+    remark:document.getElementById('edit_remark').value.trim(),
+    fees,total,updatedAt:new Date().toISOString()
+  };
+  try {
+    await sheetsAPIPost({action:'update',...db.entries[idx],fees:JSON.stringify(fees)});
+    setStatus(true,'✅ Google Sheets-এ আপডেট হয়েছে!');
+  } catch(e) { setStatus(false,'⚠️ Offline — Local-এ আপডেট হয়েছে।'); }
+  saveLocalDB();
+  const al=document.getElementById('editSaveAlert');
+  al.classList.remove('hidden');
+  setTimeout(()=>{ al.classList.add('hidden'); closeModal('editModal'); updateDashboard();
+    if(document.getElementById('sec-search').classList.contains('active')) searchHistory();
+    if(document.getElementById('sec-students').classList.contains('active')) filterStudents();
+  },1200);
+}
+
+// ===== DELETE ENTRY =====
+function openDeleteModal(entryId, refreshHistory) {
+  const entry = db.entries.find(e=>e.id===entryId);
+  if (!entry) { alert('এন্ট্রি খুঁজে পাওয়া যায়নি। Sync করুন।'); return; }
+  document.getElementById('delete_entry_id').value = entryId;
+  document.getElementById('deleteEntryInfo').innerHTML = `
+    <div style="line-height:2">
+      <strong>Student ID:</strong> ${entry.sid}<br>
+      <strong>নাম:</strong> ${entry.name}<br>
+      <strong>তারিখ:</strong> ${entry.date}<br>
+      <strong>খাত সংখ্যা:</strong> ${Object.keys(entry.fees||{}).length} টি<br>
+      <strong>মোট টাকা:</strong> <span style="color:var(--danger);font-weight:700">৳ ${numFmt(entry.total)}</span>
+    </div>`;
+  document.getElementById('deleteModal')._refreshHistory = refreshHistory;
+  document.getElementById('deleteModal').classList.add('open');
+}
+
+async function confirmDelete() {
+  const entryId = parseInt(document.getElementById('delete_entry_id').value);
+  showLoading('মুছে ফেলা হচ্ছে...');
+  try {
+    await sheetsAPIPost({action:'delete',id:entryId});
+    setStatus(true,'✅ Google Sheets থেকে মুছে ফেলা হয়েছে!');
+  } catch(e) { setStatus(false,'⚠️ Offline — Local থেকে মুছে ফেলা হয়েছে।'); }
+  db.entries = db.entries.filter(e=>e.id!==entryId);
+  saveLocalDB();
+  hideLoading();
+  closeModal('deleteModal');
+  updateDashboard();
+  if (document.getElementById('deleteModal')._refreshHistory) searchHistory();
+  if (document.getElementById('sec-students').classList.contains('active')) filterStudents();
+}
+
+// ===== UTILS =====
+function numFmt(n) {
+  return Number(n).toLocaleString('en-IN');
+}
+
+// ===== INIT =====
+function saveScriptURL() {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url.startsWith('https://script.google.com')) {
+    alert('সঠিক Apps Script URL নয়। https://script.google.com দিয়ে শুরু হওয়া URL দিন।');
+    return;
+  }
+  localStorage.setItem('mrf_script_url', url);
+  location.reload();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Load saved URL from localStorage
+  const savedUrl = localStorage.getItem('mrf_script_url');
+  if (savedUrl) {
+    // Patch APPS_SCRIPT_URL at runtime
+    window._SCRIPT_URL = savedUrl;
+  }
+
+  buildDropdowns();
+  renderFeeList();
+  document.getElementById('c_date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('c_month').value = new Date().toISOString().slice(0,7);
+
+  const urlToUse = localStorage.getItem('mrf_script_url') || APPS_SCRIPT_URL;
+  if (!urlToUse || urlToUse === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    document.getElementById('urlNotice').style.display = 'block';
+    setStatus(false, '⚠️ Apps Script URL সেট করা নেই — Local ডেটা দেখাচ্ছে।');
+    updateDashboard();
+  } else {
+    loadFromSheets();
+  }
+});
+
+// Override sheetsAPIPost to use runtime URL
+const _origPost = sheetsAPIPost;
+async function sheetsAPIPost(body) {
+  const url = localStorage.getItem('mrf_script_url') || APPS_SCRIPT_URL;
+  if (!url || url === 'YOUR_APPS_SCRIPT_URL_HERE') throw new Error('URL সেট করা নেই');
+  const res = await fetch(url, {
+    method: 'POST', redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+async function sheetsAPI(params) {
+  const url = localStorage.getItem('mrf_script_url') || APPS_SCRIPT_URL;
+  if (!url || url === 'YOUR_APPS_SCRIPT_URL_HERE') throw new Error('URL সেট করা নেই');
+  const res = await fetch(url + '?' + new URLSearchParams(params).toString(), { redirect: 'follow' });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+</script>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay no-print" id="settingsModal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header" style="background:#555">
+      <h3>⚙️ সেটিংস</h3>
+      <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:20px">
+        <div style="font-size:14px;font-weight:600;color:var(--primary);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--accent)">
+          🔗 Google Apps Script URL
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px">
+          বর্তমান URL:
+        </div>
+        <div id="currentUrlDisplay" style="font-size:12px;background:#f0f4f8;padding:8px 12px;border-radius:6px;word-break:break-all;color:var(--text-muted);margin-bottom:12px;min-height:36px;border:1px solid var(--border)"></div>
+        <div class="form-group">
+          <label>নতুন URL পেস্ট করুন</label>
+          <input type="text" id="newUrlInput" placeholder="https://script.google.com/macros/s/..." style="width:100%">
+        </div>
+        <div id="settingsAlert" class="hidden alert alert-success mt-10"></div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-size:14px;font-weight:600;color:var(--primary);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--accent)">
+          🗄️ Local ডেটা
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px" id="localDataInfo"></div>
+        <button class="btn btn-sm" style="background:#fff3cd;color:#856404;border:1px solid #ffc107" onclick="syncLocalToSheets()">
+          🔄 Local ডেটা Sheets-এ Sync করুন
+        </button>
+      </div>
+    </div>
+    <div style="padding:14px 22px;border-top:1px solid #eee" class="btn-row">
+      <button class="btn btn-success" onclick="saveNewUrl()">✅ URL সেভ করুন ও Reload</button>
+      <button class="btn btn-outline" onclick="closeModal('settingsModal')">বাতিল করুন</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openSettings() {
+  const cur = localStorage.getItem('mrf_script_url') || '(সেট করা নেই)';
+  document.getElementById('currentUrlDisplay').textContent = cur;
+  document.getElementById('newUrlInput').value = '';
+  document.getElementById('localDataInfo').textContent = 'Local cache-এ ' + db.entries.length + 'টি এন্ট্রি আছে।';
+  document.getElementById('settingsAlert').classList.add('hidden');
+  document.getElementById('settingsModal').classList.add('open');
+}
+
+function saveNewUrl() {
+  const url = document.getElementById('newUrlInput').value.trim();
+  if (!url) {
+    alert('URL লিখুন।');
+    return;
+  }
+  if (!url.startsWith('https://script.google.com')) {
+    alert('সঠিক Apps Script URL নয়। https://script.google.com দিয়ে শুরু হওয়া URL দিন।');
+    return;
+  }
+  localStorage.setItem('mrf_script_url', url);
+  const al = document.getElementById('settingsAlert');
+  al.textContent = '✅ URL সেভ হয়েছে! Reload হচ্ছে...';
+  al.classList.remove('hidden');
+  setTimeout(() => location.reload(), 1200);
+}
+
+async function syncLocalToSheets() {
+  if (db.entries.length === 0) {
+    alert('Local-এ কোনো ডেটা নেই।');
+    return;
+  }
+  const al = document.getElementById('settingsAlert');
+  al.textContent = '⏳ Sync হচ্ছে... ' + db.entries.length + 'টি এন্ট্রি।';
+  al.classList.remove('hidden');
+  al.className = 'alert alert-info mt-10';
+  let ok = 0, fail = 0;
+  for (const e of db.entries) {
+    try {
+      await sheetsAPIPost({ action: 'save', ...e, fees: JSON.stringify(e.fees) });
+      ok++;
+    } catch(err) { fail++; }
+  }
+  al.textContent = '✅ Sync সম্পন্ন: ' + ok + 'টি সফল, ' + fail + 'টি ব্যর্থ।';
+  al.className = ok > 0 ? 'alert alert-success mt-10' : 'alert alert-danger mt-10';
+}
+</script>
+</body>
+</html>
