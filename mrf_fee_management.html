@@ -370,7 +370,7 @@
     <div class="logo-circle">MRF</div>
     <div class="header-title">
       <h1>মজিবর রহমান ফাউন্ডেশন নার্সিং কলেজ</h1>
-      <p>শিক্ষার্থী ফি ম্যানেজমেন্ট সিস্টেম &nbsp;|&nbsp; Mojibor Rahman Foundation Nursing College</p>
+      <p>শিক্ষার্থী ফি ম্যানেজমেন্ট সিস্টেম &nbsp;|&nbsp; Mazibar Rahman Foundation Nursing College</p>
     </div>
   </div>
 </div>
@@ -445,8 +445,8 @@
         <select id="c_course">
           <option value="">নির্বাচন করুন</option>
           <option>B.Sc. in Nursing</option>
-          <option>Diploma in Nursing</option>
-          <option>Midwifery</option>
+          <option>Diploma in Nursing Science & Midwifery</option>
+          <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
         </select>
       </div>
@@ -457,6 +457,7 @@
           <option>2020-21</option><option>2021-22</option>
           <option>2022-23</option><option>2023-24</option>
           <option>2024-25</option><option>2025-26</option>
+          <option>2026-27</option><option>2027-28</option>
         </select>
       </div>
       <div class="form-group">
@@ -546,8 +547,8 @@
         <select id="st_course" onchange="filterStudents()">
           <option value="">সকল কোর্স</option>
           <option>B.Sc. in Nursing</option>
-          <option>Diploma in Nursing</option>
-          <option>Midwifery</option>
+          <option>Diploma in Nursing Science & Midwifery</option>
+          <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
         </select>
       </div>
@@ -630,10 +631,10 @@
           <label>কোর্স</label>
           <select id="khat_course">
             <option value="">সকল কোর্স</option>
-            <option>B.Sc. in Nursing</option>
-            <option>Diploma in Nursing</option>
-            <option>Midwifery</option>
-            <option>Post Basic B.Sc.</option>
+           <option>B.Sc. in Nursing</option>
+          <option>Diploma in Nursing Science & Midwifery</option>
+          <option>Diploma in Midwifery</option>
+          <option>Post Basic B.Sc.</option>
           </select>
         </div>
         <button class="btn btn-primary btn-sm" style="height:38px" onclick="genKhatReport()">📊 রিপোর্ট তৈরি করুন</button>
@@ -658,9 +659,9 @@
           <select id="m_course">
             <option value="">সকল কোর্স</option>
             <option>B.Sc. in Nursing</option>
-            <option>Diploma in Nursing</option>
-            <option>Midwifery</option>
-            <option>Post Basic B.Sc.</option>
+          <option>Diploma in Nursing Science & Midwifery</option>
+          <option>Diploma in Midwifery</option>
+          <option>Post Basic B.Sc.</option>
           </select>
         </div>
         <button class="btn btn-primary btn-sm" style="height:38px" onclick="genMonthlyReport()">📅 রিপোর্ট তৈরি করুন</button>
@@ -716,9 +717,9 @@
           <select id="edit_course">
             <option value="">নির্বাচন করুন</option>
             <option>B.Sc. in Nursing</option>
-            <option>Diploma in Nursing</option>
-            <option>Midwifery</option>
-            <option>Post Basic B.Sc.</option>
+          <option>Diploma in Nursing Science & Midwifery</option>
+          <option>Diploma in Midwifery</option>
+          <option>Post Basic B.Sc.</option>
           </select>
         </div>
         <div class="form-group">
@@ -728,6 +729,7 @@
             <option>2020-21</option><option>2021-22</option>
             <option>2022-23</option><option>2023-24</option>
             <option>2024-25</option><option>2025-26</option>
+            <option>2026-27</option><option>2027-28</option>
           </select>
         </div>
         <div class="form-group">
@@ -820,6 +822,7 @@ const FEE_CATEGORIES = [
   // টিউশন ও শিক্ষা
   { group: "টিউশন ও শিক্ষা ফি", items: [
     "টিউশন ফি (Tuition Fee)",
+    "কোর্স ফি (Course Fee)",
     "ক্লাস ফি (Class Fee)",
     "ল্যাব ফি (Lab Fee)",
     "ক্লিনিক্যাল ফি (Clinical Fee)",
