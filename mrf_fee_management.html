@@ -370,7 +370,7 @@
     <div class="logo-circle">MRF</div>
     <div class="header-title">
       <h1>মজিবর রহমান ফাউন্ডেশন নার্সিং কলেজ</h1>
-      <p>শিক্ষার্থী ফি ম্যানেজমেন্ট সিস্টেম &nbsp;|&nbsp; Mazibar Rahman Foundation Nursing College</p>
+      <p>শিক্ষার্থী ফি ম্যানেজমেন্ট সিস্টেম &nbsp;|&nbsp; Mojibor Rahman Foundation Nursing College</p>
     </div>
   </div>
 </div>
@@ -445,8 +445,8 @@
         <select id="c_course">
           <option value="">নির্বাচন করুন</option>
           <option>B.Sc. in Nursing</option>
-          <option>Diploma in Nursing Science & Midwifery</option>
-          <option>Diploma in Midwifery</option>
+          <option>Diploma in Nursing</option>
+          <option>Midwifery</option>
           <option>Post Basic B.Sc.</option>
         </select>
       </div>
@@ -457,7 +457,6 @@
           <option>2020-21</option><option>2021-22</option>
           <option>2022-23</option><option>2023-24</option>
           <option>2024-25</option><option>2025-26</option>
-          <option>2026-27</option><option>2027-28</option>
         </select>
       </div>
       <div class="form-group">
@@ -547,8 +546,8 @@
         <select id="st_course" onchange="filterStudents()">
           <option value="">সকল কোর্স</option>
           <option>B.Sc. in Nursing</option>
-          <option>Diploma in Nursing Science & Midwifery</option>
-          <option>Diploma in Midwifery</option>
+          <option>Diploma in Nursing</option>
+          <option>Midwifery</option>
           <option>Post Basic B.Sc.</option>
         </select>
       </div>
@@ -632,8 +631,8 @@
           <select id="khat_course">
             <option value="">সকল কোর্স</option>
             <option>B.Sc. in Nursing</option>
-            <option>Diploma in Nursing Science & Midwifery</option>
-            <option>Diploma in Midwifery</option>
+            <option>Diploma in Nursing</option>
+            <option>Midwifery</option>
             <option>Post Basic B.Sc.</option>
           </select>
         </div>
@@ -658,9 +657,9 @@
           <label>কোর্স</label>
           <select id="m_course">
             <option value="">সকল কোর্স</option>
-            <option>B.Sc. in Nursing </option>
-            <option>Diploma in Nursing Science & Midwifery</option>
-            <option>Diploma in Midwifery</option>
+            <option>B.Sc. in Nursing</option>
+            <option>Diploma in Nursing</option>
+            <option>Midwifery</option>
             <option>Post Basic B.Sc.</option>
           </select>
         </div>
@@ -717,8 +716,8 @@
           <select id="edit_course">
             <option value="">নির্বাচন করুন</option>
             <option>B.Sc. in Nursing</option>
-            <option>Diploma in Nursing Science & Midwifery</option>
-            <option>Diploma in Nursing Midwifery</option>
+            <option>Diploma in Nursing</option>
+            <option>Midwifery</option>
             <option>Post Basic B.Sc.</option>
           </select>
         </div>
@@ -729,7 +728,6 @@
             <option>2020-21</option><option>2021-22</option>
             <option>2022-23</option><option>2023-24</option>
             <option>2024-25</option><option>2025-26</option>
-            <option>2026-27</option><option>2027-28</option>
           </select>
         </div>
         <div class="form-group">
@@ -822,7 +820,6 @@ const FEE_CATEGORIES = [
   // টিউশন ও শিক্ষা
   { group: "টিউশন ও শিক্ষা ফি", items: [
     "টিউশন ফি (Tuition Fee)",
-    "কোর্স ফি (Course Fee)",
     "ক্লাস ফি (Class Fee)",
     "ল্যাব ফি (Lab Fee)",
     "ক্লিনিক্যাল ফি (Clinical Fee)",
@@ -831,12 +828,10 @@ const FEE_CATEGORIES = [
   ]},
   // পরীক্ষা সংক্রান্ত
   { group: "পরীক্ষা সংক্রান্ত ফি", items: [
-    "টেস্ট পরীক্ষা ফি (Test Exam Fee)",
+    "পরীক্ষা ফি (Exam Fee)",
     "প্রি-টেস্ট ফি (Pre-test Fee)",
     "ইন্টার্নাল পরীক্ষা ফি (Internal Exam Fee)",
-    "বিএসসি ফরম পুরণ ফি (BSC Form Fillup Fee)",
-    "ডিপ্লোমা ফরম পুরণ ফি (DNSM/DM Form Fillup Fee)",
-    "কম্প্রিহেন্সিভ পরীক্ষা ফি (Comprehensiv Exam Fee)",
+    "বোর্ড পরীক্ষা ফি (Board Exam Fee)",
     "পুনঃ পরীক্ষা ফি (Re-exam Fee)",
     "ফলাফল ফি (Result Fee)",
   ]},
@@ -873,7 +868,7 @@ const FEE_CATEGORIES = [
     "মেডিকেল ফি (Medical Fee)",
     "স্বাস্থ্য পরীক্ষা ফি (Health Check-up Fee)",
     "ইউনিফর্ম ফি (Uniform Fee)",
-    "লগো ফি (LogO Fee)",
+    "স্টেথোস্কোপ ফি (Stethoscope Fee)",
     "নার্সিং কিট ফি (Nursing Kit Fee)",
   ]},
   // খেলাধুলা ও সংস্কৃতি
@@ -943,31 +938,31 @@ function hideLoading() {
   document.getElementById('loadingBar').style.display = 'none';
 }
 
-// ===== GOOGLE SHEETS API CALL =====
+// ===== GOOGLE SHEETS API (GET only - CORS safe) =====
+function getScriptUrl() {
+  // Hardcoded URL সবসময় প্রথমে — localStorage শুধু override এর জন্য
+  const saved = localStorage.getItem('mrf_script_url');
+  if (saved && saved.startsWith('https://script.google.com')) return saved;
+  return APPS_SCRIPT_URL;
+}
+
 async function sheetsAPI(params) {
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-    throw new Error('Apps Script URL সেট করা নেই!');
-  }
-  const url = APPS_SCRIPT_URL + '?' + new URLSearchParams(params).toString();
-  const res = await fetch(url, { redirect: 'follow' });
+  const url = getScriptUrl();
+  if (!url || url === 'YOUR_APPS_SCRIPT_URL_HERE') throw new Error('URL সেট করা নেই');
+  const fullUrl = url + '?' + new URLSearchParams(params).toString();
+  const res = await fetch(fullUrl);
   const data = await res.json();
   if (data.error) throw new Error(data.error);
   return data;
 }
 
+// সব operation এখন GET দিয়ে হবে (CORS সমস্যা নেই)
 async function sheetsAPIPost(body) {
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-    throw new Error('Apps Script URL সেট করা নেই!');
+  // fees object কে string এ রূপান্তর করো
+  if (body.fees && typeof body.fees !== 'string') {
+    body.fees = JSON.stringify(body.fees);
   }
-  const res = await fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    redirect: 'follow',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(body)
-  });
-  const data = await res.json();
-  if (data.error) throw new Error(data.error);
-  return data;
+  return await sheetsAPI(body);
 }
 
 // ===== LOAD ALL DATA FROM SHEETS =====
@@ -1353,6 +1348,9 @@ function filterStudents() {
 function goHistory(sid) {
   showSection('search');
   document.getElementById('h_sid').value = sid;
+  // Clear date filters so all entries show
+  document.getElementById('h_from').value = '';
+  document.getElementById('h_to').value = '';
   searchHistory();
 }
 
@@ -1361,14 +1359,24 @@ function searchHistory() {
   const from = document.getElementById('h_from').value;
   const to   = document.getElementById('h_to').value;
   if (!sid) { document.getElementById('historyResult').innerHTML = `<div class="alert alert-info">Student ID লিখুন।</div>`; return; }
+
+  // Debug: show all SIDs in db
+  const allSids = [...new Set(db.entries.map(e => e.sid))];
+
   const entries = db.entries.filter(e => {
-    if (e.sid !== sid) return false;
-    if (from && e.date < from) return false;
-    if (to && e.date > to) return false;
+    // Case-insensitive, trim comparison
+    if ((e.sid||'').trim().toLowerCase() !== sid.toLowerCase()) return false;
+    // Skip date filter if empty
+    if (from && e.date && e.date < from) return false;
+    if (to && e.date && e.date > to) return false;
     return true;
   });
   if (entries.length === 0) {
-    document.getElementById('historyResult').innerHTML = `<div class="alert alert-danger">কোনো তথ্য পাওয়া যায়নি।</div>`; return;
+    const hint = allSids.length > 0
+      ? `<br><small>ডেটাবেজে যে ID গুলো আছে: <strong>${allSids.join(', ')}</strong></small>`
+      : '';
+    document.getElementById('historyResult').innerHTML =
+      `<div class="alert alert-danger">কোনো তথ্য পাওয়া যায়নি।${hint}</div>`; return;
   }
   const s = entries[0];
   const totalPaid = entries.reduce((sum,e)=>sum+e.total,0);
@@ -1698,38 +1706,17 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('c_date').value = new Date().toISOString().split('T')[0];
   document.getElementById('c_month').value = new Date().toISOString().slice(0,7);
 
-  const urlToUse = localStorage.getItem('mrf_script_url') || APPS_SCRIPT_URL;
-  if (!urlToUse || urlToUse === 'YOUR_APPS_SCRIPT_URL_HERE') {
+  // সরাসরি লোড করুন — URL হার্ডকোড করা আছে
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
     document.getElementById('urlNotice').style.display = 'block';
-    setStatus(false, '⚠️ Apps Script URL সেট করা নেই — Local ডেটা দেখাচ্ছে।');
+    setStatus(false, '⚠️ Apps Script URL সেট করা নেই।');
     updateDashboard();
   } else {
     loadFromSheets();
   }
 });
 
-// Override sheetsAPIPost to use runtime URL
-const _origPost = sheetsAPIPost;
-async function sheetsAPIPost(body) {
-  const url = localStorage.getItem('mrf_script_url') || APPS_SCRIPT_URL;
-  if (!url || url === 'YOUR_APPS_SCRIPT_URL_HERE') throw new Error('URL সেট করা নেই');
-  const res = await fetch(url, {
-    method: 'POST', redirect: 'follow',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(body)
-  });
-  const data = await res.json();
-  if (data.error) throw new Error(data.error);
-  return data;
-}
-async function sheetsAPI(params) {
-  const url = localStorage.getItem('mrf_script_url') || APPS_SCRIPT_URL;
-  if (!url || url === 'YOUR_APPS_SCRIPT_URL_HERE') throw new Error('URL সেট করা নেই');
-  const res = await fetch(url + '?' + new URLSearchParams(params).toString(), { redirect: 'follow' });
-  const data = await res.json();
-  if (data.error) throw new Error(data.error);
-  return data;
-}
+// API functions defined above - no override needed
 </script>
 
 <!-- SETTINGS MODAL -->
