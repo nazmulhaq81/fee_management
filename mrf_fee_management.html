@@ -478,7 +478,10 @@
       </div>
     </div>
   </div>
-
+  <div class="form-group">
+        <label>ব্যাংক রশিদ নম্বর</label>
+        <input type="text" id="c_bank_receipt" placeholder="ব্যাংক রশিদ নম্বর">
+      </div>
   <div class="card">
     <div class="card-title">💳 ফি খাত যোগ করুন</div>
 
@@ -1142,6 +1145,7 @@ function getFormData() {
     mobile: document.getElementById('c_mobile').value.trim(),
     date: document.getElementById('c_date').value,
     month: document.getElementById('c_month').value,
+    bank_receipt: document.getElementById('c_bank_receipt').value.trim(),
     remark: document.getElementById('c_remark').value.trim(),
   };
 }
@@ -1187,7 +1191,7 @@ async function saveEntry() {
 }
 
 function clearForm() {
-  ['c_sid','c_roll','c_name','c_mobile','c_remark'].forEach(id => document.getElementById(id).value = '');
+  ['c_sid','c_roll','c_name','c_mobile','c_remark','c_bank_receipt'].forEach(id => document.getElementById(id).value = '');
   ['c_course','c_session'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('c_date').value = new Date().toISOString().split('T')[0];
   document.getElementById('c_month').value = new Date().toISOString().slice(0,7);
@@ -1242,6 +1246,7 @@ function printReceipt() {
         <tr><td><strong>সেশন:</strong></td><td>${f.session || '-'}</td></tr>
         <tr><td><strong>মোবাইল:</strong></td><td>${f.mobile || '-'}</td></tr>
         <tr><td><strong>তারিখ:</strong></td><td>${f.date}</td></tr>
+        ${f.bank_receipt ? `<tr><td><strong>ব্যাংক রশিদ নম্বর:</strong></td><td><strong>${f.bank_receipt}</strong></td></tr>` : ''}
         ${f.month ? `<tr><td><strong>মাস:</strong></td><td>${f.month}</td></tr>` : ''}
       </table>
       <table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid #ccc;border-radius:6px;overflow:hidden">
