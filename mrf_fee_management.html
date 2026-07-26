@@ -548,6 +548,7 @@
       <div class="form-group">
         <label>কোর্স</label>
         <select id="st_course" onchange="filterStudents()">
+          <option value="">সকল কোর্স</option>
          <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
@@ -633,7 +634,7 @@
           <label>কোর্স</label>
           <select id="khat_course">
             <option value="">সকল কোর্স</option>
-           <option>B.Sc. in Nursing</option>
+            <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -660,7 +661,7 @@
           <label>কোর্স</label>
           <select id="m_course">
             <option value="">সকল কোর্স</option>
-           <option>B.Sc. in Nursing</option>
+            <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -1389,7 +1390,7 @@ function searchHistory() {
   let tableRows = entries.map((e,i) => {
     const feeList = Object.entries(e.fees||{}).map(([k,v])=>`${k}: ৳${numFmt(v)}`).join(', ');
     return `<tr>
-      <td>${i+1}</td><td>${e.date}</td><td>${e.month||'-'}</td>
+      <td>${i+1}</td><td>${e.date}</td><td>${fmtMonth(e.month)}</td>
       <td>${Object.keys(e.fees||{}).length} টি</td>
       <td style="font-size:12px;max-width:260px">${feeList}</td>
       <td><strong>${e.bank_receipt||'-'}</strong></td>
@@ -1686,6 +1687,25 @@ async function confirmDelete() {
 }
 
 // ===== UTILS =====
+function fmtMonth(m) {
+  if (!m) return '-';
+  // যদি "2026-07" ফরম্যাটে থাকে
+  if (/^\d{4}-\d{2}$/.test(m)) {
+    const [yr, mo] = m.split('-');
+    const names = ['','জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+    return (names[parseInt(mo)] || mo) + ' ' + yr;
+  }
+  // যদি Date string হয়ে আসে
+  try {
+    const d = new Date(m);
+    if (!isNaN(d)) {
+      const names = ['','জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+      return (names[d.getMonth()+1]) + ' ' + d.getFullYear();
+    }
+  } catch(e) {}
+  return m;
+}
+
 function numFmt(n) {
   return Number(n).toLocaleString('en-IN');
 }
