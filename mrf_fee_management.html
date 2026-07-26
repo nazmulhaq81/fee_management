@@ -457,7 +457,6 @@
           <option>2020-21</option><option>2021-22</option>
           <option>2022-23</option><option>2023-24</option>
           <option>2024-25</option><option>2025-26</option>
-          <option>2026-27</option><option>2027-28</option>
         </select>
       </div>
       <div class="form-group">
@@ -482,7 +481,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="card">
     <div class="card-title">💳 ফি খাত যোগ করুন</div>
 
@@ -549,8 +548,7 @@
       <div class="form-group">
         <label>কোর্স</label>
         <select id="st_course" onchange="filterStudents()">
-          <option value="">সকল কোর্স</option>
-          <option>B.Sc. in Nursing</option>
+         <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -662,7 +660,7 @@
           <label>কোর্স</label>
           <select id="m_course">
             <option value="">সকল কোর্স</option>
-            <option>B.Sc. in Nursing</option>
+           <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -720,7 +718,7 @@
           <label>কোর্স</label>
           <select id="edit_course">
             <option value="">নির্বাচন করুন</option>
-            <option>B.Sc. in Nursing</option>
+           <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -733,7 +731,6 @@
             <option>2020-21</option><option>2021-22</option>
             <option>2022-23</option><option>2023-24</option>
             <option>2024-25</option><option>2025-26</option>
-            <option>2026-27</option><option>2027-28</option>
           </select>
         </div>
         <div class="form-group">
@@ -1146,8 +1143,8 @@ function getFormData() {
     mobile: document.getElementById('c_mobile').value.trim(),
     date: document.getElementById('c_date').value,
     month: document.getElementById('c_month').value,
-    bank_receipt: document.getElementById('c_bank_receipt').value.trim(),
     remark: document.getElementById('c_remark').value.trim(),
+    bank_receipt: document.getElementById('c_bank_receipt').value.trim(),
   };
 }
 
@@ -1395,6 +1392,7 @@ function searchHistory() {
       <td>${i+1}</td><td>${e.date}</td><td>${e.month||'-'}</td>
       <td>${Object.keys(e.fees||{}).length} টি</td>
       <td style="font-size:12px;max-width:260px">${feeList}</td>
+      <td><strong>${e.bank_receipt||'-'}</strong></td>
       <td class="text-right fw-600 text-success">৳ ${numFmt(e.total)}</td>
       <td>${e.remark||'-'}</td>
       <td class="no-print"><div style="display:flex;gap:4px">
@@ -1414,10 +1412,11 @@ function searchHistory() {
         <br>মোট: <strong style="color:var(--success)">${entries.length} বার</strong> | সর্বমোট: <strong style="color:var(--primary)">৳ ${numFmt(totalPaid)}</strong>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>#</th><th>তারিখ</th><th>মাস</th><th>খাত</th><th>বিবরণ</th><th class="text-right">পরিমাণ</th><th>মন্তব্য</th><th class="no-print">Action</th></tr></thead>
+        <thead><tr><th>#</th><th>তারিখ</th><th>মাস</th><th>খাত</th><th>বিবরণ</th><th>ব্যাংক রশিদ নং</th><th class="text-right">পরিমাণ</th><th>মন্তব্য</th><th class="no-print">Action</th></tr></thead>
         <tbody>${tableRows}</tbody>
         <tfoot><tr style="background:#e8f0fa;font-weight:700">
           <td colspan="5" style="padding:9px 12px">সর্বমোট</td>
+          <td></td>
           <td class="text-right" style="padding:9px 12px;color:var(--success)">৳ ${numFmt(totalPaid)}</td>
           <td></td><td class="no-print"></td>
         </tr></tfoot>
