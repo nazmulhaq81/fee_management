@@ -457,6 +457,7 @@
           <option>2020-21</option><option>2021-22</option>
           <option>2022-23</option><option>2023-24</option>
           <option>2024-25</option><option>2025-26</option>
+          <option>2026-27</option><option>2027-28</option>
         </select>
       </div>
       <div class="form-group">
@@ -549,7 +550,7 @@
         <label>কোর্স</label>
         <select id="st_course" onchange="filterStudents()">
           <option value="">সকল কোর্স</option>
-         <option>B.Sc. in Nursing</option>
+           <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -634,7 +635,7 @@
           <label>কোর্স</label>
           <select id="khat_course">
             <option value="">সকল কোর্স</option>
-            <option>B.Sc. in Nursing</option>
+             <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -661,7 +662,7 @@
           <label>কোর্স</label>
           <select id="m_course">
             <option value="">সকল কোর্স</option>
-            <option>B.Sc. in Nursing</option>
+             <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -719,7 +720,7 @@
           <label>কোর্স</label>
           <select id="edit_course">
             <option value="">নির্বাচন করুন</option>
-           <option>B.Sc. in Nursing</option>
+             <option>B.Sc. in Nursing</option>
           <option>Diploma in Nursing Science & Midwifery</option>
           <option>Diploma in Midwifery</option>
           <option>Post Basic B.Sc.</option>
@@ -732,6 +733,7 @@
             <option>2020-21</option><option>2021-22</option>
             <option>2022-23</option><option>2023-24</option>
             <option>2024-25</option><option>2025-26</option>
+            <option>2026-27</option><option>2027-28</option>
           </select>
         </div>
         <div class="form-group">
@@ -963,11 +965,15 @@ async function sheetsAPI(params) {
 
 // সব operation এখন GET দিয়ে হবে (CORS সমস্যা নেই)
 async function sheetsAPIPost(body) {
-  // fees object কে string এ রূপান্তর করো
   if (body.fees && typeof body.fees !== 'string') {
     body.fees = JSON.stringify(body.fees);
   }
-  return await sheetsAPI(body);
+  // সব ফিল্ড string এ রূপান্তর করো
+  const cleaned = {};
+  Object.keys(body).forEach(k => {
+    cleaned[k] = body[k] === null || body[k] === undefined ? '' : String(body[k]);
+  });
+  return await sheetsAPI(cleaned);
 }
 
 // ===== LOAD ALL DATA FROM SHEETS =====
@@ -1171,7 +1177,7 @@ async function saveEntry() {
   const entry = { id, ...f, fees, total, savedAt: new Date().toISOString() };
   showLoading('Google Sheets-এ সংরক্ষণ হচ্ছে...');
   try {
-    await sheetsAPIPost({ action: 'save', id, ...f, fees: JSON.stringify(fees), total });
+    await sheetsAPIPost({ action: 'save', id, sid: f.sid, roll: f.roll, name: f.name, course: f.course, session: f.session, mobile: f.mobile, date: f.date, month: f.month, remark: f.remark, bank_receipt: f.bank_receipt||'', fees: JSON.stringify(fees), total });
     db.entries.unshift(entry);
     saveLocalDB();
     hideLoading();
@@ -1245,7 +1251,7 @@ function printReceipt() {
         <tr><td><strong>সেশন:</strong></td><td>${f.session || '-'}</td></tr>
         <tr><td><strong>মোবাইল:</strong></td><td>${f.mobile || '-'}</td></tr>
         <tr><td><strong>তারিখ:</strong></td><td>${f.date}</td></tr>
-        ${f.bank_receipt ? `<tr><td><strong>ব্যাংক রশিদ নম্বর:</strong></td><td><strong>${f.bank_receipt}</strong></td></tr>` : ''}
+        ${(f.bank_receipt && f.bank_receipt.trim()) ? `<tr><td style='width:50%'><strong>ব্যাংক রশিদ নম্বর:</strong></td><td><strong>${f.bank_receipt}</strong></td></tr>` : ''}
         ${f.month ? `<tr><td><strong>মাস:</strong></td><td>${f.month}</td></tr>` : ''}
       </table>
       <table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid #ccc;border-radius:6px;overflow:hidden">
